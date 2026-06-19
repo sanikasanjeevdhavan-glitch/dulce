@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cafe Dulce — Made to feel good, meant to enjoy slowly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F0EAE0;
+      --cream2:  #E8E0D2;
+      --sage:    #C8CEB8;
+      --sage-lt: #D8DDCC;
+      --brown:   #2C1A0E;
+      --bmid:    #4A3020;
+      --blt:     #7A6858;
+      --green:   #6B8C5A;
+      --green2:  #5A7A4A;
+      --bd:      rgba(44,26,14,0.1);
+      --bd2:     rgba(44,26,14,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--brown);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--brown);
+      overflow: hidden; padding: 0.55rem 0;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    }
+    .ticker-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ti {
+      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(240,234,224,0.75); flex-shrink: 0; padding: 0 1.2rem;
+    }
+    .td { color: var(--green); font-size: 0.65rem; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 28px; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: var(--cream);
+      border-bottom: 1px solid var(--bd);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo-circle {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--brown); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .nav-logo-circle svg { width: 38px; height: 38px; }
+    .nav-brand-text { line-height: 1.2; }
+    .nav-brand-name {
+      font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 400;
+      color: var(--brown); letter-spacing: 0.02em;
+    }
+    .nav-brand-est {
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--blt);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.88rem; color: var(--bmid); text-decoration: none;
+      letter-spacing: 0.01em; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--brown); }
+    .nav-cta {
+      background: var(--brown); color: var(--cream);
+      text-decoration: none; font-size: 0.75rem; font-weight: 400;
+      padding: 0.6rem 1.4rem; border-radius: 100px;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--bmid); }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 92px; /* ticker + nav */
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--cream);
+    }
+    .hero-left {
+      padding: 6rem 5rem 5rem 6rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--blt); margin-bottom: 2.5rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--blt); }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 7.5vw, 7.5rem);
+      font-weight: 400; line-height: 1.02;
+      color: var(--brown); margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-title .green { color: var(--green); font-style: normal; }
+    .hero-title .italic { font-style: italic; }
+    .hero-body {
+      font-size: 0.9rem; line-height: 1.85; color: var(--blt);
+      max-width: 420px; margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 0.8rem; margin-bottom: 4rem; }
+    .btn-dark {
+      background: var(--brown); color: var(--cream);
+      border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem; font-weight: 400;
+      padding: 0.8rem 1.8rem; border-radius: 100px;
+      transition: background 0.2s; text-decoration: none; display: inline-block;
+    }
+    .btn-dark:hover { background: var(--bmid); }
+    .btn-ghost {
+      background: none; border: 1.5px solid var(--bd);
+      color: var(--brown); cursor: pointer; font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem; font-weight: 400;
+      padding: 0.8rem 1.8rem; border-radius: 100px;
+      transition: all 0.2s; text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--brown); }
+    .hero-stats {
+      display: flex; gap: 0; border-top: 1px solid var(--bd); padding-top: 2rem;
+    }
+    .hstat + .hstat { margin-left: 3rem; padding-left: 3rem; border-left: 1px solid var(--bd); }
+    .hstat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 400; color: var(--brown);
+      display: flex; align-items: center; gap: 0.2rem; line-height: 1;
+    }
+    .hstat-star { font-size: 1.2rem; }
+    .hstat-l { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blt); margin-top: 0.3rem; }
+
+    /* Hero right */
+    .hero-right {
+      padding: 3rem 3rem 3rem 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    /* Big sage green card */
+    .hero-card-main {
+      width: 100%; max-width: 420px;
+      background: var(--sage-lt); border-radius: 20px;
+      padding: 2rem; position: relative;
+      min-height: 480px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hcm-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .hcm-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bmid); opacity: 0.6; }
+    /* Open badge — green circle */
+    .open-badge {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: var(--green); color: white;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+      line-height: 1.4; text-align: center;
+    }
+    .open-badge strong { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; font-weight: 400; letter-spacing: 0; }
+    /* Matcha circle */
+    .hcm-circle {
+      width: 160px; height: 160px; border-radius: 50%;
+      border: 1.5px solid rgba(44,26,14,0.2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 1.5rem auto; gap: 0.15rem;
+    }
+    .hcm-circle-top { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bmid); opacity: 0.7; }
+    .hcm-circle-mid { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; color: var(--brown); }
+    .hcm-circle-bot { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bmid); opacity: 0.7; }
+    /* Quote card overlapping */
+    .hcm-quote {
+      background: var(--cream); border-radius: 12px;
+      padding: 1.2rem 1.4rem; margin-top: 0;
+    }
+    .hcm-quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: var(--brown);
+      line-height: 1.5; margin-bottom: 0.5rem;
+    }
+    .hcm-quote-attr { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blt); }
+    /* Now brewing dark card */
+    .hcm-brewing {
+      background: var(--brown); border-radius: 12px;
+      padding: 1rem 1.4rem; margin-top: 0.8rem;
+      position: absolute; bottom: -1rem; left: -1.5rem;
+      width: 220px;
+    }
+    .hcm-brew-label { font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.55); margin-bottom: 0.3rem; }
+    .hcm-brew-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; color: var(--cream); line-height: 1.4; }
+
+    /* ── SECTION CARDS (01 02 03) ── */
+    .cards-section {
+      padding: 5rem 4rem; background: var(--cream);
+    }
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; max-width: 1200px; margin: 0 auto; }
+    .sec-card {
+      background: var(--cream2); border-radius: 16px;
+      padding: 2rem 2rem 1.8rem;
+      text-decoration: none; color: inherit; display: block;
+      transition: background 0.2s;
+    }
+    .sec-card:hover { background: #E0D8CA; }
+    .sc-num { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blt); margin-bottom: 1.2rem; }
+    .sc-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400; color: var(--brown);
+      margin-bottom: 0.8rem; line-height: 1.2;
+    }
+    .sc-body { font-size: 0.8rem; color: var(--blt); line-height: 1.7; margin-bottom: 1.5rem; }
+    .sc-link { font-size: 0.78rem; color: var(--brown); display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ── MENU SECTION ── */
+    #menu { padding: 6rem 6rem; background: var(--cream); }
+    .menu-hd { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
+    .menu-hd-left { }
+    .sec-eye { font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--blt); margin-bottom: 0.8rem; display: block; }
+    .sec-title-lg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4.5vw, 4rem); font-weight: 400;
+      color: var(--brown); line-height: 1.1;
+    }
+    .menu-hours { text-align: right; font-size: 0.7rem; color: var(--blt); line-height: 1.8; }
+    .menu-hours strong { display: block; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blt); margin-bottom: 0.3rem; font-weight: 400; }
+
+    .menu-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--bd); margin-bottom: 0; }
+    .mt {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; padding: 0.7rem 1.4rem;
+      font-family: 'Outfit', sans-serif; font-size: 0.8rem;
+      color: var(--blt); cursor: pointer; transition: all 0.2s;
+    }
+    .mt.on { color: var(--brown); border-bottom-color: var(--brown); font-weight: 400; }
+    .mt:not(.on):hover { color: var(--brown); }
+
+    .ml { display: none; }
+    .ml.on { display: block; }
+    .mi {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 1.3rem 0; border-bottom: 1px dashed var(--bd2); gap: 1rem;
+    }
+    .mi:last-child { border-bottom: none; }
+    .mi-n { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--brown); margin-bottom: 0.18rem; }
+    .mi-d { font-size: 0.75rem; color: var(--blt); line-height: 1.5; }
+    .mi-dots { flex: 1; border-bottom: 1px dashed rgba(44,26,14,0.15); margin: 0 1rem; align-self: baseline; min-width: 40px; }
+    .mi-p { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--brown); white-space: nowrap; flex-shrink: 0; }
+
+    /* ── FIND US ── */
+    #findus { padding: 6rem 6rem; background: var(--cream); }
+    .findus-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+    .findus-meta { font-size: 0.72rem; color: var(--blt); text-align: right; line-height: 1.7; }
+
+    .loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .lc {
+      background: var(--cream2); border-radius: 16px;
+      padding: 1.8rem 2rem; text-decoration: none; color: inherit;
+      display: block; transition: background 0.2s; position: relative;
+    }
+    .lc:hover { background: #E0D8CA; }
+    .lc-inner { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .lc-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--brown); color: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0; margin-top: 0.2rem;
+    }
+    .lc-body { flex: 1; }
+    .lc-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; color: var(--brown);
+      margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    }
+    .here-pill {
+      background: var(--green); color: white;
+      font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.22rem 0.65rem; border-radius: 100px; font-family: 'Outfit', sans-serif;
+    }
+    .lc-sub { font-size: 0.72rem; color: var(--bmid); margin-bottom: 0.2rem; font-style: italic; }
+    .lc-addr { font-size: 0.75rem; color: var(--blt); margin-bottom: 0.5rem; line-height: 1.6; }
+    .lc-hrs { font-size: 0.72rem; color: var(--blt); margin-bottom: 1rem; }
+    .lc-foot { display: flex; align-items: center; gap: 0.8rem; }
+    .lc-phone { font-size: 0.75rem; color: var(--bmid); text-decoration: none; }
+    .lc-sep { color: var(--bd); font-size: 0.8rem; }
+    .lc-dir { font-size: 0.75rem; color: var(--brown); text-decoration: none; display: flex; align-items: center; gap: 0.25rem; transition: gap 0.2s; }
+    .lc-dir:hover { gap: 0.45rem; }
+    .lc-full { grid-column: span 1; }
+
+    /* ── REVIEWS ── */
+    #reviews { padding: 6rem 6rem; background: var(--cream); }
+    .reviews-hd { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
+    .reviews-rating { text-align: right; }
+    .rr-big { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--brown); display: flex; align-items: center; gap: 0.3rem; justify-content: flex-end; }
+    .rr-big .star { font-size: 1.4rem; }
+    .rr-sub { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blt); margin-top: 0.2rem; }
+
+    .rv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .rv {
+      background: var(--cream2); border-radius: 16px; padding: 1.6rem 1.8rem;
+    }
+    .rv-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .rv-who { display: flex; align-items: center; gap: 0.7rem; }
+    .rv-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--sage); color: var(--brown);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 400; flex-shrink: 0;
+    }
+    .rv-name { font-size: 0.82rem; color: var(--brown); font-weight: 400; }
+    .rv-time { font-size: 0.68rem; color: var(--blt); }
+    .rv-stars { color: var(--green); font-size: 0.75rem; letter-spacing: 0.08em; }
+    .rv-q {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: var(--brown); line-height: 1.65;
+    }
+
+    .rv-summary {
+      background: var(--brown); border-radius: 16px;
+      padding: 1.8rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
+    }
+    .rvs-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; }
+    .rvs-sub { font-size: 0.78rem; color: rgba(240,234,224,0.55); }
+    .btn-read-reviews {
+      background: none; border: 1.5px solid rgba(240,234,224,0.3);
+      color: var(--cream); text-decoration: none; font-size: 0.75rem;
+      padding: 0.7rem 1.5rem; border-radius: 100px; white-space: nowrap;
+      transition: border-color 0.2s; display: inline-block;
+    }
+    .btn-read-reviews:hover { border-color: rgba(240,234,224,0.7); }
+
+    /* ── INSTAGRAM ── */
+    #instagram { padding: 6rem 6rem; background: var(--cream); }
+    .ig-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+    .ig-hd-right { text-align: right; }
+    .ig-followers { font-size: 0.9rem; color: var(--brown); font-weight: 400; }
+    .ig-freq { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blt); margin-top: 0.2rem; }
+    .ig-title-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; color: var(--brown);
+    }
+
+    .ig-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .ig-cell {
+      border-radius: 12px; overflow: hidden;
+      background: var(--sage-lt); aspect-ratio: 1;
+      position: relative; text-decoration: none; display: block;
+      transition: opacity 0.2s;
+    }
+    .ig-cell:hover { opacity: 0.85; }
+    .ig-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1rem 1.1rem 0.9rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .ig-cap-text { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-style: italic; color: var(--brown); opacity: 0.8; }
+    .ig-cap-arrow { font-size: 0.75rem; color: var(--brown); opacity: 0.5; flex-shrink: 0; }
+
+    .ig-footer-bar {
+      background: var(--cream2); border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ig-handle-text { font-size: 0.85rem; color: var(--brown); }
+    .ig-handle-text span { color: var(--blt); font-size: 0.78rem; }
+    .btn-ig-follow {
+      background: var(--brown); color: var(--cream);
+      text-decoration: none; font-size: 0.75rem;
+      padding: 0.65rem 1.4rem; border-radius: 100px;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: background 0.2s;
+    }
+    .btn-ig-follow:hover { background: var(--bmid); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown); padding: 4rem 6rem 2.5rem;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .ft-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-style: italic; font-weight: 400;
+      color: var(--cream); margin-bottom: 0.3rem;
+    }
+    .ft-brand-loc { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.4); margin-bottom: 1rem; }
+    .ft-brand-tag { font-size: 0.8rem; color: rgba(240,234,224,0.5); line-height: 1.7; }
+    .ft-col-head { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.4); margin-bottom: 1.2rem; display: block; }
+    .ft-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .ft-links a { font-size: 0.85rem; color: rgba(240,234,224,0.65); text-decoration: none; transition: color 0.2s; }
+    .ft-links a:hover { color: var(--cream); }
+    .ft-phone { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; }
+    .ft-ig { font-size: 0.85rem; color: rgba(240,234,224,0.55); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+    .ft-ig:hover { color: var(--cream); }
+    .footer-bottom {
+      border-top: 1px solid rgba(240,234,224,0.08); padding-top: 1.5rem;
+      display: flex; justify-content: space-between;
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(240,234,224,0.25);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-eyebrow { animation: fadeUp 0.6s 0.1s both; }
+    .hero-title    { animation: fadeUp 0.6s 0.2s both; }
+    .hero-body     { animation: fadeUp 0.6s 0.3s both; }
+    .hero-btns     { animation: fadeUp 0.6s 0.38s both; }
+    .hero-stats    { animation: fadeUp 0.6s 0.46s both; }
+    .hero-card-main{ animation: fadeUp 0.7s 0.2s both; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 3rem 2rem; }
+      .hero-right { padding: 2rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      #menu, #findus, #reviews, #instagram { padding: 4rem 2rem; }
+      .cards-section { padding: 3rem 2rem; }
+      .loc-grid { grid-template-columns: 1fr; }
+      .rv-grid { grid-template-columns: 1fr; }
+      .ig-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 3rem 2rem 2rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ti">Spicy Korean Cheesesteak</span><span class="td"> ✦ </span>
+    <span class="ti">Matcha Latte</span><span class="td"> ✦ </span>
+    <span class="ti">Breakfast Burrito</span><span class="td"> ✦ </span>
+    <span class="ti">Pastrami Burger</span><span class="td"> ✦ </span>
+    <span class="ti">Since 2011 · Los Angeles</span><span class="td"> ✦ </span>
+    <span class="ti">Pesto Chicken</span><span class="td"> ✦ </span>
+    <span class="ti">Caprese Sandwich</span><span class="td"> ✦ </span>
+    <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td"> ✦ </span>
+    <span class="ti">Spicy Korean Cheesesteak</span><span class="td"> ✦ </span>
+    <span class="ti">Matcha Latte</span><span class="td"> ✦ </span>
+    <span class="ti">Breakfast Burrito</span><span class="td"> ✦ </span>
+    <span class="ti">Pastrami Burger</span><span class="td"> ✦ </span>
+    <span class="ti">Since 2011 · Los Angeles</span><span class="td"> ✦ </span>
+    <span class="ti">Pesto Chicken</span><span class="td"> ✦ </span>
+    <span class="ti">Caprese Sandwich</span><span class="td"> ✦ </span>
+    <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td"> ✦ </span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#home">
+    <div class="nav-logo-circle">
+      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="19" y="10" font-family="'Outfit',sans-serif" font-size="3.2" font-weight="300" letter-spacing="1.8" fill="#B5CC99" text-anchor="middle">EST. 2011</text>
+        <line x1="8" y1="12" x2="30" y2="12" stroke="#B5CC99" stroke-width="0.3" opacity="0.4"/>
+        <text x="19" y="19.5" font-family="'Cormorant Garamond',serif" font-size="5.2" font-weight="400" letter-spacing="2" fill="#F0EAE0" text-anchor="middle">CAFE</text>
+        <text x="19" y="27.5" font-family="'Cormorant Garamond',serif" font-size="8.5" font-weight="400" letter-spacing="1.5" fill="#F0EAE0" text-anchor="middle">DULCE</text>
+        <line x1="7" y1="29.5" x2="31" y2="29.5" stroke="#F0EAE0" stroke-width="0.3" opacity="0.2"/>
+        <text x="19" y="35" font-family="'Cormorant Garamond',serif" font-size="4" font-style="italic" font-weight="300" letter-spacing="1" fill="#B5CC99" text-anchor="middle">Los Angeles</text>
+      </svg>
+    </div>
+    <div class="nav-brand-text">
+      <div class="nav-brand-name">Cafe Dulce</div>
+      <div class="nav-brand-est">Est. 2011</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#findus">Find Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+  </ul>
+  <a class="nav-cta" href="tel:2135365609">Call to Order</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-eyebrow">A Los Angeles Cafe · Since 2011</div>
+    <h1 class="hero-title">
+      Made to feel <span class="green">good</span>,<br>
+      meant to enjoy<br>
+      <span class="italic">slowly</span>.
+    </h1>
+    <p class="hero-body">A neighborhood cafe with five corners of Los Angeles. Soft mornings, slow afternoons, sandwiches stacked with care, and a matcha that tastes like the garden it came from.</p>
+    <div class="hero-btns">
+      <a class="btn-dark" href="#menu">See the Menu →</a>
+      <a class="btn-ghost" href="#findus">Find a Location</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-n">4.4<span class="hstat-star">★</span></div>
+        <div class="hstat-l">Google</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-n">5</div>
+        <div class="hstat-l">Locations</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-n">14+</div>
+        <div class="hstat-l">Years</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card-main">
+      <div class="hcm-top">
+        <span class="hcm-label">Today's Pour &nbsp; No. 14</span>
+        <div class="open-badge">
+          <span>OPEN</span>
+          <strong>today</strong>
+        </div>
+      </div>
+      <div class="hcm-circle">
+        <span class="hcm-circle-top">Matcha</span>
+        <span class="hcm-circle-mid">slow</span>
+        <span class="hcm-circle-bot">poured</span>
+      </div>
+      <div class="hcm-quote">
+        <p class="hcm-quote-text">"the kind of cafe you stay an extra hour in."</p>
+        <p class="hcm-quote-attr">— Eater LA · 2023</p>
+      </div>
+      <div class="hcm-brewing">
+        <div class="hcm-brew-label">Now Brewing</div>
+        <div class="hcm-brew-text">Single-origin Ethiopia, honey process.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION CARDS -->
+<div class="cards-section">
+  <div class="cards-grid">
+    <a class="sec-card" href="#menu">
+      <div class="sc-num">01 · Menu</div>
+      <div class="sc-title">Built by hand, every morning.</div>
+      <div class="sc-body">Sandwiches stacked with care, salads tossed to order, breakfast that lingers.</div>
+      <div class="sc-link">Explore →</div>
+    </a>
+    <a class="sec-card" href="#findus">
+      <div class="sc-num">02 · Locations</div>
+      <div class="sc-title">Five corners of LA.</div>
+      <div class="sc-body">USC Village, Little Tokyo, ROW DTLA, Dulce Cinco, and Vernon.</div>
+      <div class="sc-link">Explore →</div>
+    </a>
+    <a class="sec-card" href="#reviews">
+      <div class="sc-num">03 · The Neighborhood</div>
+      <div class="sc-title">522 reviews, 4.4 stars.</div>
+      <div class="sc-body">Loved by regulars who treat us like a second living room.</div>
+      <div class="sc-link">Explore →</div>
+    </a>
+  </div>
+</div>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-hd">
+    <div class="menu-hd-left">
+      <span class="sec-eye">The Menu</span>
+      <h2 class="sec-title-lg">Stacked, fresh, slow.</h2>
+    </div>
+    <div class="menu-hours">
+      <strong>Hours</strong>
+      Mon–Fri 7AM–7PM<br>Sat–Sun 8AM–6PM
+    </div>
+  </div>
+  <div class="menu-tabs">
+    <button class="mt on" onclick="tab('s',this)">Sandwiches</button>
+    <button class="mt"    onclick="tab('sa',this)">Salads</button>
+    <button class="mt"    onclick="tab('b',this)">Breakfast</button>
+    <button class="mt"    onclick="tab('d',this)">Dinner</button>
+  </div>
+  <div class="ml on" id="t-s">
+    <div class="mi"><div><p class="mi-n">Spicy Korean Cheesesteak</p><p class="mi-d">Shaved steak, gochujang aioli, melted provolone, kimchi slaw.</p></div><div class="mi-dots"></div><span class="mi-p">$15.00</span></div>
+    <div class="mi"><div><p class="mi-n">Pastrami Burger</p><p class="mi-d">House pastrami stacked on a wagyu patty with swiss & mustard.</p></div><div class="mi-dots"></div><span class="mi-p">$15.00</span></div>
+    <div class="mi"><div><p class="mi-n">Ranchera Steak Burrito</p><p class="mi-d">Marinated ranchera steak, rice, beans, salsa verde.</p></div><div class="mi-dots"></div><span class="mi-p">$14.40</span></div>
+    <div class="mi"><div><p class="mi-n">Pesto Chicken</p><p class="mi-d">Grilled chicken, basil pesto, mozzarella, sundried tomato.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Dulce Club</p><p class="mi-d">Triple-stacked turkey, bacon, avocado, lettuce, tomato.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Portobello Burger</p><p class="mi-d">Roasted portobello, caramelized onion, garlic aioli.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Caprese Sandwich</p><p class="mi-d">Fresh mozzarella, tomato, basil, balsamic glaze.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Turkey Swiss</p><p class="mi-d">Roast turkey, swiss, dijon, butter lettuce on sourdough.</p></div><div class="mi-dots"></div><span class="mi-p">$12.00</span></div>
+  </div>
+  <div class="ml" id="t-sa">
+    <div class="mi"><div><p class="mi-n">Asian Chicken Salad</p><p class="mi-d">Herb-roasted chicken, sesame dressing, mixed nuts, mandarin oranges.</p></div><div class="mi-dots"></div><span class="mi-p">$17.00</span></div>
+    <div class="mi"><div><p class="mi-n">Mango Jicama Chicken</p><p class="mi-d">Peanut vinaigrette, egg noodles, persian cucumbers, sesame seeds.</p></div><div class="mi-dots"></div><span class="mi-p">$17.00</span></div>
+    <div class="mi"><div><p class="mi-n">Caprese Salad</p><p class="mi-d">Mozzarella, basil, tomatoes, persian cucumbers, balsamic glaze.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Peanut Kale Salad</p><p class="mi-d">Roasted peanut vinaigrette, crumbled peanuts, grated reggiano, mint.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Cranberry Walnut</p><p class="mi-d">Avocado, apples, arugula, mixed greens, olive oil & balsamic.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+  </div>
+  <div class="ml" id="t-b">
+    <div class="mi"><div><p class="mi-n">Breakfast Sandwich</p><p class="mi-d">House milk bread, over medium eggs, black forest ham, arugula, cheddar.</p></div><div class="mi-dots"></div><span class="mi-p">$11.40</span></div>
+    <div class="mi"><div><p class="mi-n">Breakfast Burrito</p><p class="mi-d">Bacon, scrambled eggs, roasted potatoes, pico de gallo, cheddar & jack.</p></div><div class="mi-dots"></div><span class="mi-p">$11.40</span></div>
+    <div class="mi"><div><p class="mi-n">Pesto Mayo</p></div><div class="mi-dots"></div><span class="mi-p">$1.00</span></div>
+    <div class="mi"><div><p class="mi-n">Chili Sauce / Spicy Mustard / Spicy Mayo</p></div><div class="mi-dots"></div><span class="mi-p">$0.50</span></div>
+  </div>
+  <div class="ml" id="t-d">
+    <div class="mi"><div><p class="mi-n">Avocado Bacon Burger</p><p class="mi-d">House brioche, sharp cheddar, bacon, avocado, pickles & house sauce.</p></div><div class="mi-dots"></div><span class="mi-p">$15.60</span></div>
+    <div class="mi"><div><p class="mi-n">Dulce Burger</p><p class="mi-d">House brioche, slaw, pickles, sharp cheddar & house sauce.</p></div><div class="mi-dots"></div><span class="mi-p">$14.40</span></div>
+    <div class="mi"><div><p class="mi-n">Tuna Melt</p><p class="mi-d">Tuna salad on house baguette, sharp cheddar & serrano peppers.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
+    <div class="mi"><div><p class="mi-n">Basket of Fries</p></div><div class="mi-dots"></div><span class="mi-p">$7.14</span></div>
+  </div>
+</section>
+
+<!-- FIND US -->
+<section id="findus">
+  <div class="findus-hd">
+    <div>
+      <span class="sec-eye">Find Us</span>
+      <h2 class="sec-title-lg">Five corners of LA.</h2>
+    </div>
+    <div class="findus-meta">5 locations · open daily</div>
+  </div>
+  <div class="loc-grid">
+    <a class="lc" href="https://maps.google.com/?q=3096+McClintock+Ave+Los+Angeles" target="_blank" rel="noopener">
+      <div class="lc-inner">
+        <div class="lc-num">1</div>
+        <div class="lc-body">
+          <div class="lc-name">USC Village <span class="here-pill">You're here</span></div>
+          <div class="lc-addr">3096 McClintock Ave #1420, Los Angeles</div>
+          <div class="lc-hrs">Mon–Fri 7AM–7PM · Sat–Sun 8AM–6PM</div>
+          <div class="lc-foot">
+            <a class="lc-phone" href="tel:2135365609">(213) 536-5609</a>
+            <span class="lc-sep">·</span>
+            <a class="lc-dir" href="https://maps.google.com/?q=3096+McClintock+Ave+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a class="lc" href="https://maps.google.com/?q=134+Japanese+Village+Plaza+Los+Angeles" target="_blank" rel="noopener">
+      <div class="lc-inner">
+        <div class="lc-num">2</div>
+        <div class="lc-body">
+          <div class="lc-name">Little Tokyo</div>
+          <div class="lc-sub">Est. 2011 — the original</div>
+          <div class="lc-addr">134 Japanese Village Plaza, Los Angeles</div>
+          <div class="lc-hrs">Mon–Thu 8AM–7PM · Fri–Sat –9PM · Sun –8PM</div>
+          <div class="lc-foot">
+            <a class="lc-phone" href="tel:2133469910">(213) 346-9910</a>
+            <span class="lc-sep">·</span>
+            <a class="lc-dir" href="https://maps.google.com/?q=134+Japanese+Village+Plaza+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a class="lc" href="https://maps.google.com/?q=777+S+Alameda+St+Los+Angeles" target="_blank" rel="noopener">
+      <div class="lc-inner">
+        <div class="lc-num">3</div>
+        <div class="lc-body">
+          <div class="lc-name">ROW DTLA</div>
+          <div class="lc-addr">777 S Alameda St #150, Los Angeles</div>
+          <div class="lc-hrs">Mon–Fri 8AM–4PM · Sat–Sun 10AM–4PM</div>
+          <div class="lc-foot">
+            <a class="lc-phone" href="tel:2135369633">(213) 536-9633</a>
+            <span class="lc-sep">·</span>
+            <a class="lc-dir" href="https://maps.google.com/?q=777+S+Alameda+St+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a class="lc" href="https://maps.google.com/?q=210+E+Olympic+Blvd+Los+Angeles" target="_blank" rel="noopener">
+      <div class="lc-inner">
+        <div class="lc-num">4</div>
+        <div class="lc-body">
+          <div class="lc-name">Dulce Cinco</div>
+          <div class="lc-addr">210 E Olympic Blvd, Los Angeles</div>
+          <div class="lc-hrs">Mon–Fri 8:30AM–4:30PM · Sat 9AM–4PM</div>
+          <div class="lc-foot">
+            <a class="lc-phone" href="tel:2132388032">(213) 238-8032</a>
+            <span class="lc-sep">·</span>
+            <a class="lc-dir" href="https://maps.google.com/?q=210+E+Olympic+Blvd+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a class="lc" href="https://maps.google.com/?q=2520+S+Alameda+St+Vernon+CA" target="_blank" rel="noopener">
+      <div class="lc-inner">
+        <div class="lc-num">5</div>
+        <div class="lc-body">
+          <div class="lc-name">Vernon</div>
+          <div class="lc-addr">2520 S Alameda St, Vernon</div>
+          <div class="lc-hrs">Mon–Fri 7AM–3PM · Sat–Sun Closed</div>
+          <div class="lc-foot">
+            <a class="lc-phone" href="tel:2132464655">(213) 246-4655</a>
+            <span class="lc-sep">·</span>
+            <a class="lc-dir" href="https://maps.google.com/?q=2520+S+Alameda+St+Vernon+CA" target="_blank" rel="noopener">Directions →</a>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-hd">
+    <div>
+      <span class="sec-eye">Reviews</span>
+      <h2 class="sec-title-lg">What guests are saying.</h2>
+    </div>
+    <div class="reviews-rating">
+      <div class="rr-big">4.4<span class="star">★</span></div>
+      <div class="rr-sub">522 Google Reviews</div>
+    </div>
+  </div>
+  <div class="rv-grid">
+    <div class="rv">
+      <div class="rv-top">
+        <div class="rv-who">
+          <div class="rv-avatar">M</div>
+          <div><div class="rv-name">Maya R.</div><div class="rv-time">2 weeks ago</div></div>
+        </div>
+        <div class="rv-stars">★★★★★</div>
+      </div>
+      <p class="rv-q">"The Korean cheesesteak is unreal and the matcha latte is the best in DTLA. Cozy vibes, kind staff."</p>
+    </div>
+    <div class="rv">
+      <div class="rv-top">
+        <div class="rv-who">
+          <div class="rv-avatar">D</div>
+          <div><div class="rv-name">Daniel K.</div><div class="rv-time">1 month ago</div></div>
+        </div>
+        <div class="rv-stars">★★★★★</div>
+      </div>
+      <p class="rv-q">"My USC morning ritual. The breakfast burrito and an oat latte and I'm set for the day."</p>
+    </div>
+    <div class="rv">
+      <div class="rv-top">
+        <div class="rv-who">
+          <div class="rv-avatar">P</div>
+          <div><div class="rv-name">Priya S.</div><div class="rv-time">3 weeks ago</div></div>
+        </div>
+        <div class="rv-stars">★★★★<span style="opacity:0.3">★</span></div>
+      </div>
+      <p class="rv-q">"Beautiful little spot in Little Tokyo. The caprese sandwich is fresh and the pastries are dangerous."</p>
+    </div>
+    <div class="rv">
+      <div class="rv-top">
+        <div class="rv-who">
+          <div class="rv-avatar">J</div>
+          <div><div class="rv-name">Jordan T.</div><div class="rv-time">5 days ago</div></div>
+        </div>
+        <div class="rv-stars">★★★★★</div>
+      </div>
+      <p class="rv-q">"Honestly the warmest cafe in LA. The Dulce burger at dinner hits and the staff remember your name."</p>
+    </div>
+  </div>
+  <div class="rv-summary">
+    <div>
+      <div class="rvs-title">Loved by the neighborhood.</div>
+      <div class="rvs-sub">4.4★ average across 522 verified Google reviews.</div>
+    </div>
+    <a class="btn-read-reviews" href="https://maps.google.com/?q=Cafe+Dulce+USC+Village" target="_blank" rel="noopener">Read all reviews →</a>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <div class="ig-hd">
+    <div>
+      <span class="sec-eye">Instagram</span>
+      <div class="ig-title-big">@cafedulcela</div>
+    </div>
+    <div class="ig-hd-right">
+      <div class="ig-followers">20.9K followers</div>
+      <div class="ig-freq">Daily-ish</div>
+    </div>
+  </div>
+  <div class="ig-grid">
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Matcha mornings</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Pastrami stack</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Sunday slow</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Pesto chicken</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Cinco corner</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
+      <div class="ig-caption"><span class="ig-cap-text">Closing hour</span><span class="ig-cap-arrow">↗</span></div>
+    </a>
+  </div>
+  <div class="ig-footer-bar">
+    <div class="ig-handle-text">@cafedulcela <span>· 20.9K followers</span></div>
+    <a class="btn-ig-follow" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">Follow on Instagram →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="ft-brand-name">Cafe Dulce</div>
+      <div class="ft-brand-loc">Los Angeles · Est. 2011</div>
+      <div class="ft-brand-tag">Made to feel good, meant to enjoy slowly. Five neighborhood cafes across LA.</div>
+    </div>
+    <div>
+      <span class="ft-col-head">Visit</span>
+      <ul class="ft-links">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#findus">Find Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#instagram">Instagram</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="ft-col-head">Say Hello</span>
+      <div class="ft-phone">(213) 536-5609</div>
+      <a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Cafe Dulce</span>
+    <span>Made slowly in LA</span>
+  </div>
+</footer>
+
+<script>
+  function go(url) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+  function scrollTo(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+  function tab(id, btn) {
+    document.querySelectorAll('.ml').forEach(m => m.classList.remove('on'));
+    document.querySelectorAll('.mt').forEach(b => b.classList.remove('on'));
+    document.getElementById('t-' + id).classList.add('on');
+    btn.classList.add('on');
+  }
+</script>
+</body>
+</html>
