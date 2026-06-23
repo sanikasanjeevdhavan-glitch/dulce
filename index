@@ -1,868 +1,766 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cafe Dulce — Made to feel good, meant to enjoy slowly</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cafe Dulce — Made to feel good, meant to enjoy slowly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F0E8;--bg2:#EDE7D9;--sage:#D0D6C2;
+  --brown:#1C1208;--bmid:#483620;--blt:#8A7A6A;
+  --green:#6B8B52;--bd:rgba(28,18,8,0.1);--bd2:rgba(28,18,8,0.06);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--brown);font-family:'Outfit',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.page{display:none}.page.active{display:block}
 
-    :root {
-      --cream:   #F0EAE0;
-      --cream2:  #E8E0D2;
-      --sage:    #C8CEB8;
-      --sage-lt: #D8DDCC;
-      --brown:   #2C1A0E;
-      --bmid:    #4A3020;
-      --blt:     #7A6858;
-      --green:   #6B8C5A;
-      --green2:  #5A7A4A;
-      --bd:      rgba(44,26,14,0.1);
-      --bd2:     rgba(44,26,14,0.06);
-    }
+/* TICKER */
+.ticker{background:var(--brown);overflow:hidden;padding:.5rem 0;height:30px;position:fixed;top:0;left:0;right:0;z-index:300}
+.ticker-track{display:flex;white-space:nowrap;animation:ticker 32s linear infinite}
+.ti{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.65);flex-shrink:0;padding:0 1.2rem}
+.td{color:var(--green);padding:0 .2rem}
 
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--cream);
-      color: var(--brown);
-      font-family: 'Outfit', sans-serif;
-      font-weight: 400;
-      font-size: 15px;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
+/* NAV */
+nav{position:fixed;top:30px;left:0;right:0;z-index:200;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;background:var(--bg);border-bottom:1px solid var(--bd)}
+.nav-brand{display:flex;align-items:center;gap:.85rem;text-decoration:none;cursor:pointer}
+.nav-circle{width:44px;height:44px;border-radius:50%;background:white;flex-shrink:0;overflow:hidden;border:1.5px solid rgba(28,18,8,0.75)}
+.nav-name{font-size:.92rem;font-weight:400;color:var(--brown);line-height:1.2}
+.nav-est{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blt);display:block}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links button{background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:300;color:var(--bmid);transition:all .2s;padding:0}
+.nav-links button:hover{color:var(--brown)}
+.nav-links button.active{color:var(--brown);font-weight:500}
+.nav-cta{background:var(--brown);color:var(--bg);border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:400;padding:.65rem 1.6rem;border-radius:100px;transition:background .2s;text-decoration:none}
+.nav-cta:hover{background:var(--bmid)}
 
-    /* ── TICKER ── */
-    .ticker {
-      background: var(--brown);
-      overflow: hidden; padding: 0.55rem 0;
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    }
-    .ticker-track {
-      display: flex; gap: 0; white-space: nowrap;
-      animation: ticker 28s linear infinite;
-    }
-    .ti {
-      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(240,234,224,0.75); flex-shrink: 0; padding: 0 1.2rem;
-    }
-    .td { color: var(--green); font-size: 0.65rem; }
+/* HOME */
+#page-home{padding-top:96px;min-height:100vh}
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 96px)}
+.hero-left{padding:5rem 4rem 4rem 6rem;display:flex;flex-direction:column;justify-content:space-between}
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--blt);font-weight:400;margin-bottom:2rem}
+.hero-eyebrow::before{content:'';width:2rem;height:1px;background:var(--blt);flex-shrink:0}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.8rem,6.2vw,6.8rem);font-weight:400;line-height:1.05;color:var(--brown);letter-spacing:-.01em;margin-bottom:2rem}
+.hero-title .green{color:var(--green)}
+.hero-title .italic{font-style:italic}
+.hero-desc{font-size:.9rem;line-height:1.8;color:var(--blt);max-width:440px;margin-bottom:2.2rem;font-weight:300}
+.hero-btns{display:flex;gap:.9rem;margin-bottom:0}
+.btn-dark{background:var(--brown);color:var(--bg);border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:400;padding:.78rem 1.8rem;border-radius:100px;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-dark:hover{background:var(--bmid)}
+.btn-ghost{background:none;border:1.5px solid rgba(28,18,8,.2);color:var(--brown);cursor:pointer;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:300;padding:.78rem 1.8rem;border-radius:100px;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-ghost:hover{border-color:var(--brown)}
+.hero-stats{display:flex;padding-top:2.5rem;border-top:1px solid var(--bd);margin-top:3rem}
+.hstat+.hstat{margin-left:3.5rem}
+.hstat-n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:var(--brown);display:flex;align-items:baseline;gap:.1rem;line-height:1}
+.hstat-l{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blt);margin-top:.35rem}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 28px; left: 0; right: 0; z-index: 100;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2.5rem;
-      background: var(--cream);
-      border-bottom: 1px solid var(--bd);
-    }
-    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-    .nav-logo-circle {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: var(--brown); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .nav-logo-circle svg { width: 38px; height: 38px; }
-    .nav-brand-text { line-height: 1.2; }
-    .nav-brand-name {
-      font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 400;
-      color: var(--brown); letter-spacing: 0.02em;
-    }
-    .nav-brand-est {
-      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--blt);
-    }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-size: 0.88rem; color: var(--bmid); text-decoration: none;
-      letter-spacing: 0.01em; transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--brown); }
-    .nav-cta {
-      background: var(--brown); color: var(--cream);
-      text-decoration: none; font-size: 0.75rem; font-weight: 400;
-      padding: 0.6rem 1.4rem; border-radius: 100px;
-      transition: background 0.2s; white-space: nowrap;
-    }
-    .nav-cta:hover { background: var(--bmid); }
+/* HERO RIGHT */
+.hero-right{padding:2.5rem 3rem 3rem 1.5rem;display:flex;align-items:flex-start;justify-content:center}
+.hero-right-inner{width:100%;max-width:440px;position:relative;display:flex;flex-direction:column;gap:1.2rem;padding-top:1rem}
+.ob-open{font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.85);line-height:1.4}
+.ob-today{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:white;line-height:1}
+.hc-circle{width:165px;height:165px;border-radius:50%;border:1.5px solid rgba(28,18,8,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:auto;gap:.18rem}
+.hc-c-top{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bmid);opacity:.6}
+.hc-c-mid{font-family:'Playfair Display',serif;font-size:1.6rem;font-style:italic;color:var(--brown)}
+.hc-c-bot{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bmid);opacity:.6}
+.hc-quote{background:white;border-radius:14px;padding:1.2rem 1.4rem;margin-top:1.5rem}
+.hc-qt{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--brown);line-height:1.5;margin-bottom:.35rem}
+.hc-qa{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blt)}
+.hc-brew{position:absolute;bottom:-1rem;left:-1.5rem;background:var(--brown);border-radius:14px;padding:.9rem 1.3rem;width:205px;z-index:2}
+.hc-brew-l{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.45);margin-bottom:.25rem}
+.hc-brew-t{font-family:'Playfair Display',serif;font-size:1rem;color:var(--bg);line-height:1.4}
 
-    /* ── HERO ── */
-    .hero {
-      padding-top: 92px; /* ticker + nav */
-      min-height: 100vh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      background: var(--cream);
-    }
-    .hero-left {
-      padding: 6rem 5rem 5rem 6rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .hero-eyebrow {
-      display: flex; align-items: center; gap: 1rem;
-      font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--blt); margin-bottom: 2.5rem;
-    }
-    .hero-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--blt); }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(4rem, 7.5vw, 7.5rem);
-      font-weight: 400; line-height: 1.02;
-      color: var(--brown); margin-bottom: 2rem;
-      letter-spacing: -0.01em;
-    }
-    .hero-title .green { color: var(--green); font-style: normal; }
-    .hero-title .italic { font-style: italic; }
-    .hero-body {
-      font-size: 0.9rem; line-height: 1.85; color: var(--blt);
-      max-width: 420px; margin-bottom: 2.5rem;
-    }
-    .hero-btns { display: flex; gap: 0.8rem; margin-bottom: 4rem; }
-    .btn-dark {
-      background: var(--brown); color: var(--cream);
-      border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
-      font-size: 0.8rem; font-weight: 400;
-      padding: 0.8rem 1.8rem; border-radius: 100px;
-      transition: background 0.2s; text-decoration: none; display: inline-block;
-    }
-    .btn-dark:hover { background: var(--bmid); }
-    .btn-ghost {
-      background: none; border: 1.5px solid var(--bd);
-      color: var(--brown); cursor: pointer; font-family: 'Outfit', sans-serif;
-      font-size: 0.8rem; font-weight: 400;
-      padding: 0.8rem 1.8rem; border-radius: 100px;
-      transition: all 0.2s; text-decoration: none; display: inline-block;
-    }
-    .btn-ghost:hover { border-color: var(--brown); }
-    .hero-stats {
-      display: flex; gap: 0; border-top: 1px solid var(--bd); padding-top: 2rem;
-    }
-    .hstat + .hstat { margin-left: 3rem; padding-left: 3rem; border-left: 1px solid var(--bd); }
-    .hstat-n {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 400; color: var(--brown);
-      display: flex; align-items: center; gap: 0.2rem; line-height: 1;
-    }
-    .hstat-star { font-size: 1.2rem; }
-    .hstat-l { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blt); margin-top: 0.3rem; }
+/* HOME CARDS */
+.home-cards{background:var(--bg);padding:4rem 6rem 6rem;position:relative;overflow:hidden}
+.home-cards::before{content:'';position:absolute;bottom:-120px;left:-120px;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(180,200,155,.2) 0%,transparent 65%);pointer-events:none}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;position:relative;z-index:1}
+.sec-card{background:var(--bg2);border-radius:20px;padding:2rem 2rem 1.8rem;cursor:pointer;transition:background .2s;border:none;text-align:left;display:block;width:100%;font-family:'Outfit',sans-serif}
+.sec-card:hover{background:#E2D9C8}
+.sc-num{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blt);margin-bottom:1.3rem;font-weight:400}
+.sc-title{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:400;color:var(--brown);margin-bottom:.8rem;line-height:1.2}
+.sc-body{font-size:.78rem;color:var(--blt);line-height:1.75;margin-bottom:1.8rem;font-weight:300}
+.sc-link{font-size:.78rem;color:var(--brown)}
 
-    /* Hero right */
-    .hero-right {
-      padding: 3rem 3rem 3rem 1.5rem;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    /* Big sage green card */
-    .hero-card-main {
-      width: 100%; max-width: 420px;
-      background: var(--sage-lt); border-radius: 20px;
-      padding: 2rem; position: relative;
-      min-height: 480px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .hcm-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .hcm-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bmid); opacity: 0.6; }
-    /* Open badge — green circle */
-    .open-badge {
-      width: 68px; height: 68px; border-radius: 50%;
-      background: var(--green); color: white;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
-      line-height: 1.4; text-align: center;
-    }
-    .open-badge strong { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; font-weight: 400; letter-spacing: 0; }
-    /* Matcha circle */
-    .hcm-circle {
-      width: 160px; height: 160px; border-radius: 50%;
-      border: 1.5px solid rgba(44,26,14,0.2);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      margin: 1.5rem auto; gap: 0.15rem;
-    }
-    .hcm-circle-top { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bmid); opacity: 0.7; }
-    .hcm-circle-mid { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; color: var(--brown); }
-    .hcm-circle-bot { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bmid); opacity: 0.7; }
-    /* Quote card overlapping */
-    .hcm-quote {
-      background: var(--cream); border-radius: 12px;
-      padding: 1.2rem 1.4rem; margin-top: 0;
-    }
-    .hcm-quote-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem; font-style: italic; color: var(--brown);
-      line-height: 1.5; margin-bottom: 0.5rem;
-    }
-    .hcm-quote-attr { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blt); }
-    /* Now brewing dark card */
-    .hcm-brewing {
-      background: var(--brown); border-radius: 12px;
-      padding: 1rem 1.4rem; margin-top: 0.8rem;
-      position: absolute; bottom: -1rem; left: -1.5rem;
-      width: 220px;
-    }
-    .hcm-brew-label { font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.55); margin-bottom: 0.3rem; }
-    .hcm-brew-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; color: var(--cream); line-height: 1.4; }
+/* SHARED PAGE STYLES */
+.inner{padding:3rem 6rem 5rem}
+.pg-eye{font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--blt);margin-bottom:.8rem;display:block;font-weight:400}
+.pg-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:var(--brown);line-height:1.05}
+.pg-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3rem}
 
-    /* ── SECTION CARDS (01 02 03) ── */
-    .cards-section {
-      padding: 5rem 4rem; background: var(--cream);
-    }
-    .cards-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; max-width: 1200px; margin: 0 auto; }
-    .sec-card {
-      background: var(--cream2); border-radius: 16px;
-      padding: 2rem 2rem 1.8rem;
-      text-decoration: none; color: inherit; display: block;
-      transition: background 0.2s;
-    }
-    .sec-card:hover { background: #E0D8CA; }
-    .sc-num { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blt); margin-bottom: 1.2rem; }
-    .sc-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem; font-weight: 400; color: var(--brown);
-      margin-bottom: 0.8rem; line-height: 1.2;
-    }
-    .sc-body { font-size: 0.8rem; color: var(--blt); line-height: 1.7; margin-bottom: 1.5rem; }
-    .sc-link { font-size: 0.78rem; color: var(--brown); display: flex; align-items: center; gap: 0.3rem; }
+/* MENU PAGE */
+#page-menu{padding-top:96px;min-height:100vh}
+.menu-hrs{text-align:right;font-size:.7rem;color:var(--blt);line-height:1.8}
+.menu-hrs strong{display:block;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blt);margin-bottom:.2rem;font-weight:400}
+.mtabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:0}
+.mt{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.7rem 1.4rem;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:300;color:var(--blt);cursor:pointer;transition:all .2s}
+.mt.on{color:var(--brown);border-bottom-color:var(--brown);font-weight:400}
+.mt:not(.on):hover{color:var(--brown)}
+.ml{display:none}.ml.on{display:block}
+.mi{display:block;padding:1.8rem 0;border-bottom:1px solid rgba(28,18,8,.07)}
+.mi:last-child{border-bottom:none}
+.mi-top{display:flex;align-items:baseline}
+.mi-n{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:400;color:var(--brown);flex-shrink:0}
+.mi-dots{flex:1;border-bottom:1px dashed rgba(28,18,8,.12);margin:0 1rem;position:relative;top:-5px;min-width:40px}
+.mi-p{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:300;color:var(--brown);white-space:nowrap;flex-shrink:0}
+.mi-d{font-size:.72rem;color:var(--blt);line-height:1.5;font-weight:300;margin-top:.4rem;display:block}
 
-    /* ── MENU SECTION ── */
-    #menu { padding: 6rem 6rem; background: var(--cream); }
-    .menu-hd { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
-    .menu-hd-left { }
-    .sec-eye { font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--blt); margin-bottom: 0.8rem; display: block; }
-    .sec-title-lg {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 4.5vw, 4rem); font-weight: 400;
-      color: var(--brown); line-height: 1.1;
-    }
-    .menu-hours { text-align: right; font-size: 0.7rem; color: var(--blt); line-height: 1.8; }
-    .menu-hours strong { display: block; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blt); margin-bottom: 0.3rem; font-weight: 400; }
+/* FIND US PAGE */
+#page-findus{padding-top:96px;min-height:100vh}
+.findus-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
+.findus-meta{font-size:.78rem;color:var(--blt);font-weight:300}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.lc{background:var(--bg2);border-radius:20px;padding:2.6rem 3rem 2.4rem;display:block;transition:background .2s;width:100%}
+.lc:hover{background:#E2D9C8}
+.lc-row1{display:flex;align-items:center;gap:1.4rem;margin-bottom:1.2rem}
+.lc-num{width:44px;height:44px;border-radius:50%;background:var(--brown);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:400;flex-shrink:0}
+.lc-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:var(--brown);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;line-height:1.2}
+.here-pill{background:var(--green);color:white;font-family:'Outfit',sans-serif;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;font-weight:400}
+.lc-sub{font-size:.74rem;color:var(--bmid);font-style:italic;margin-bottom:.5rem;display:block}
+.lc-addr{font-size:.8rem;color:var(--blt);line-height:1.5;margin-bottom:.3rem;font-weight:300}
+.lc-hrs{font-size:.75rem;color:var(--blt);margin-bottom:1.8rem;font-weight:300}
+.lc-foot{display:flex;align-items:center}
+.lc-phone{font-size:.8rem;color:var(--bmid);text-decoration:none;font-weight:300}
+.lc-sep{display:inline-block;width:20px;height:1px;background:var(--blt);vertical-align:middle;margin:0 .5rem;opacity:.5}
+.lc-dir{font-size:.8rem;color:var(--brown);text-decoration:underline;text-underline-offset:2px;font-weight:300}
 
-    .menu-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--bd); margin-bottom: 0; }
-    .mt {
-      background: none; border: none; border-bottom: 2px solid transparent;
-      margin-bottom: -1px; padding: 0.7rem 1.4rem;
-      font-family: 'Outfit', sans-serif; font-size: 0.8rem;
-      color: var(--blt); cursor: pointer; transition: all 0.2s;
-    }
-    .mt.on { color: var(--brown); border-bottom-color: var(--brown); font-weight: 400; }
-    .mt:not(.on):hover { color: var(--brown); }
+/* REVIEWS PAGE */
+#page-reviews{padding-top:96px;min-height:100vh}
+.rv-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.5rem}
+.rv-big{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:400;color:var(--brown);display:flex;align-items:center;gap:.2rem;justify-content:flex-end}
+.rv-sub{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blt);margin-top:.2rem;text-align:right}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.rv{background:var(--bg2);border-radius:18px;padding:1.6rem 1.8rem}
+.rv-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.rv-who{display:flex;align-items:center;gap:.7rem}
+.rv-av{width:36px;height:36px;border-radius:50%;background:var(--sage);color:var(--bmid);display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0}
+.rv-n{font-size:.82rem;color:var(--brown);font-weight:400}
+.rv-t{font-size:.66rem;color:var(--blt)}
+.rv-stars{color:var(--green);font-size:.76rem;letter-spacing:.05em}
+.rv-q{font-family:'Playfair Display',serif;font-size:1.05rem;font-style:italic;color:var(--brown);line-height:1.6}
+.rv-banner{background:var(--brown);border-radius:18px;padding:1.8rem 2.5rem;display:flex;justify-content:space-between;align-items:center;gap:2rem}
+.rv-banner-t{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:400;color:var(--bg);margin-bottom:.35rem}
+.rv-banner-s{font-size:.76rem;color:rgba(245,240,232,.45)}
+.btn-rv{background:none;border:1.5px solid rgba(245,240,232,.22);color:var(--bg);text-decoration:none;font-size:.76rem;padding:.65rem 1.4rem;border-radius:100px;white-space:nowrap;display:inline-block;transition:border-color .2s}
+.btn-rv:hover{border-color:rgba(245,240,232,.6)}
 
-    .ml { display: none; }
-    .ml.on { display: block; }
-    .mi {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 1.3rem 0; border-bottom: 1px dashed var(--bd2); gap: 1rem;
-    }
-    .mi:last-child { border-bottom: none; }
-    .mi-n { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--brown); margin-bottom: 0.18rem; }
-    .mi-d { font-size: 0.75rem; color: var(--blt); line-height: 1.5; }
-    .mi-dots { flex: 1; border-bottom: 1px dashed rgba(44,26,14,0.15); margin: 0 1rem; align-self: baseline; min-width: 40px; }
-    .mi-p { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--brown); white-space: nowrap; flex-shrink: 0; }
+/* INSTAGRAM PAGE */
+#page-instagram{padding-top:96px;min-height:100vh}
+.ig-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem}
+.ig-followers{font-size:.9rem;color:var(--brown);font-weight:400}
+.ig-freq{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blt);margin-top:.2rem}
+.ig-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:var(--brown)}
+.ig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem}
+.ig-cell{border-radius:16px;overflow:hidden;background:var(--sage);aspect-ratio:1;position:relative;text-decoration:none;display:block;transition:opacity .2s}
+.ig-cell:hover{opacity:.85}
+.ig-cap{position:absolute;bottom:0;left:0;right:0;padding:.9rem 1rem .8rem;display:flex;justify-content:space-between;align-items:flex-end}
+.ig-cap-t{font-family:'Playfair Display',serif;font-size:.92rem;font-style:italic;color:var(--brown);opacity:.75}
+.ig-cap-a{font-size:.78rem;color:var(--brown);opacity:.45}
+.ig-bar{background:var(--bg2);border-radius:14px;padding:1.1rem 1.8rem;display:flex;justify-content:space-between;align-items:center}
+.ig-bar-l{font-size:.82rem;color:var(--brown)}
+.ig-bar-l span{color:var(--blt);font-size:.76rem}
+.btn-ig{background:var(--brown);color:var(--bg);text-decoration:none;font-size:.76rem;padding:.65rem 1.4rem;border-radius:100px;display:inline-flex;align-items:center;gap:.4rem;transition:background .2s}
+.btn-ig:hover{background:var(--bmid)}
 
-    /* ── FIND US ── */
-    #findus { padding: 6rem 6rem; background: var(--cream); }
-    .findus-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
-    .findus-meta { font-size: 0.72rem; color: var(--blt); text-align: right; line-height: 1.7; }
+/* FOOTER */
+footer{background:var(--brown);padding:4rem 6rem 2.5rem}
+.ft-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.ft-name{font-family:'Playfair Display',serif;font-size:2.6rem;font-style:italic;font-weight:400;color:var(--bg);margin-bottom:.3rem}
+.ft-loc{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,240,232,.32);margin-bottom:1rem}
+.ft-tag{font-size:.82rem;color:rgba(245,240,232,.42);line-height:1.75}
+.ft-head{font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,240,232,.32);margin-bottom:1.1rem;display:block}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.ft-links button{background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.9rem;color:rgba(245,240,232,.58);transition:color .2s;padding:0;text-align:left}
+.ft-links button:hover{color:var(--bg)}
+.ft-phone{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:var(--bg);margin-bottom:.5rem}
+.ft-ig{font-size:.88rem;color:rgba(245,240,232,.45);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;transition:color .2s}
+.ft-ig:hover{color:var(--bg)}
+.ft-bottom{border-top:1px solid rgba(245,240,232,.08);padding-top:1.5rem;display:flex;justify-content:space-between;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.2)}
 
-    .loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .lc {
-      background: var(--cream2); border-radius: 16px;
-      padding: 1.8rem 2rem; text-decoration: none; color: inherit;
-      display: block; transition: background 0.2s; position: relative;
-    }
-    .lc:hover { background: #E0D8CA; }
-    .lc-inner { display: flex; gap: 1.2rem; align-items: flex-start; }
-    .lc-num {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--brown); color: var(--cream);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; flex-shrink: 0; margin-top: 0.2rem;
-    }
-    .lc-body { flex: 1; }
-    .lc-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; font-weight: 400; color: var(--brown);
-      margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
-    }
-    .here-pill {
-      background: var(--green); color: white;
-      font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase;
-      padding: 0.22rem 0.65rem; border-radius: 100px; font-family: 'Outfit', sans-serif;
-    }
-    .lc-sub { font-size: 0.72rem; color: var(--bmid); margin-bottom: 0.2rem; font-style: italic; }
-    .lc-addr { font-size: 0.75rem; color: var(--blt); margin-bottom: 0.5rem; line-height: 1.6; }
-    .lc-hrs { font-size: 0.72rem; color: var(--blt); margin-bottom: 1rem; }
-    .lc-foot { display: flex; align-items: center; gap: 0.8rem; }
-    .lc-phone { font-size: 0.75rem; color: var(--bmid); text-decoration: none; }
-    .lc-sep { color: var(--bd); font-size: 0.8rem; }
-    .lc-dir { font-size: 0.75rem; color: var(--brown); text-decoration: none; display: flex; align-items: center; gap: 0.25rem; transition: gap 0.2s; }
-    .lc-dir:hover { gap: 0.45rem; }
-    .lc-full { grid-column: span 1; }
+/* ANIMATIONS */
 
-    /* ── REVIEWS ── */
-    #reviews { padding: 6rem 6rem; background: var(--cream); }
-    .reviews-hd { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
-    .reviews-rating { text-align: right; }
-    .rr-big { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--brown); display: flex; align-items: center; gap: 0.3rem; justify-content: flex-end; }
-    .rr-big .star { font-size: 1.4rem; }
-    .rr-sub { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blt); margin-top: 0.2rem; }
+/* PAGE TRANSITIONS */
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.page.active .hero,.page.active .home-cards{animation:pageIn .45s cubic-bezier(.22,.61,.36,1) both}
+.page.active .pg-hd{animation:pageIn .42s .05s both}
+.page.active .mtabs{animation:pageIn .42s .10s both}
+.page.active .ml.on{animation:pageIn .42s .18s both}
+.page.active .loc-grid{animation:pageIn .42s .12s both}
+.page.active .rv-hd{animation:pageIn .42s .05s both}
+.page.active .rv-grid{animation:pageIn .42s .13s both}
+.page.active .rv-banner{animation:pageIn .42s .22s both}
+.page.active .ig-hd,.page.active .ig-profile-wrap{animation:pageIn .42s .08s both}
+.page.active footer{animation:pageIn .42s .28s both}
+@media(prefers-reduced-motion:reduce){.page.active *{animation:none!important}}
 
-    .rv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .rv {
-      background: var(--cream2); border-radius: 16px; padding: 1.6rem 1.8rem;
-    }
-    .rv-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-    .rv-who { display: flex; align-items: center; gap: 0.7rem; }
-    .rv-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--sage); color: var(--brown);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 400; flex-shrink: 0;
-    }
-    .rv-name { font-size: 0.82rem; color: var(--brown); font-weight: 400; }
-    .rv-time { font-size: 0.68rem; color: var(--blt); }
-    .rv-stars { color: var(--green); font-size: 0.75rem; letter-spacing: 0.08em; }
-    .rv-q {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem; font-style: italic; color: var(--brown); line-height: 1.65;
-    }
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* fadeUp kept */ @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{animation:fadeUp .5s .05s both}
+.hero-title{animation:fadeUp .6s .15s both}
+.hero-desc{animation:fadeUp .6s .25s both}
+.hero-btns{animation:fadeUp .6s .33s both}
+.hero-stats{animation:fadeUp .6s .41s both}
+.hero-card{animation:fadeUp .65s .15s both}
 
-    .rv-summary {
-      background: var(--brown); border-radius: 16px;
-      padding: 1.8rem 2.5rem;
-      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
-    }
-    .rvs-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; }
-    .rvs-sub { font-size: 0.78rem; color: rgba(240,234,224,0.55); }
-    .btn-read-reviews {
-      background: none; border: 1.5px solid rgba(240,234,224,0.3);
-      color: var(--cream); text-decoration: none; font-size: 0.75rem;
-      padding: 0.7rem 1.5rem; border-radius: 100px; white-space: nowrap;
-      transition: border-color 0.2s; display: inline-block;
-    }
-    .btn-read-reviews:hover { border-color: rgba(240,234,224,0.7); }
+/* MOBILE */
+@media(max-width:860px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-left{padding:3rem 2rem 2rem}
+  .hero-right{padding:2rem}
+  .home-cards,.inner{padding:3rem 2rem}
+  .cards-grid,.loc-grid,.rv-grid,.ig-grid{grid-template-columns:1fr}
+  footer{padding:3rem 2rem 2rem}
+  .ft-grid{grid-template-columns:1fr;gap:2rem}
+}
 
-    /* ── INSTAGRAM ── */
-    #instagram { padding: 6rem 6rem; background: var(--cream); }
-    .ig-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
-    .ig-hd-right { text-align: right; }
-    .ig-followers { font-size: 0.9rem; color: var(--brown); font-weight: 400; }
-    .ig-freq { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blt); margin-top: 0.2rem; }
-    .ig-title-big {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; color: var(--brown);
+    /* STICKY NOTE */
+    .sticky-wrap{
+      position:relative;
     }
+    .paperclip{
+      position:absolute;
+      top:-28px;left:2rem;
+      width:22px;height:58px;
+      z-index:3;
+      filter:drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+    }
+    .open-badge-note{
+      position:absolute;
+      top:-1.2rem;right:1.8rem;
+      width:62px;height:62px;
+      border-radius:50%;
+      background:var(--green);
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      z-index:4;
+      box-shadow:0 3px 10px rgba(28,18,8,0.15);
+    }
+    .open-badge-note .ob-open{font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.85);line-height:1.4}
+    .open-badge-note .ob-today{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:white;line-height:1}
+    .sticky-note{
+      background:#C8CEBC;
+      border-radius:3px;
+      padding:1.5rem 2.2rem 3.4rem 1.8rem;
+      transform:rotate(-1.5deg);
+      box-shadow:3px 4px 18px rgba(28,18,8,0.18),0 1px 3px rgba(28,18,8,0.1);
+      position:relative;
+    }
+    .sticky-note::after{
+      content:'';
+      position:absolute;bottom:0;right:0;
+      width:0;height:0;
+      border-style:solid;
+      border-width:0 0 22px 22px;
+      border-color:transparent transparent rgba(28,18,8,0.12) transparent;
+    }
+    .sticky-header{
+      margin-bottom:1.1rem;padding-bottom:.9rem;
+      border-bottom:1px dashed rgba(28,18,8,0.2);
+    }
+    .sticky-title{
+      display:block;font-family:'Outfit',sans-serif;
+      font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--brown);margin-bottom:.2rem;
+    }
+    .sticky-sub{
+      font-size:.62rem;color:var(--bmid);opacity:.65;letter-spacing:.06em;
+    }
+    .bs-item{
+      display:flex;align-items:center;gap:1rem;
+      padding:.6rem 0;border-bottom:1px solid rgba(28,18,8,0.1);
+    }
+    .bs-item:last-child{border-bottom:none;padding-bottom:0}
+    .bs-rank{
+      font-family:'Playfair Display',serif;
+      font-size:.72rem;font-style:italic;color:var(--bmid);
+      width:1.5rem;flex-shrink:0;opacity:.7;
+    }
+    .bs-info{flex:1;min-width:0}
+    .bs-name{font-size:.8rem;font-weight:400;color:var(--brown);margin-bottom:.1rem}
+    .bs-desc{font-size:.64rem;color:var(--bmid);font-weight:300;opacity:.75}
+    .bs-price{
+      font-family:'Playfair Display',serif;
+      font-size:.88rem;color:var(--green);flex-shrink:0;font-weight:400;
+    }
+  
+    /* STICKY WRAP */
+    .sticky-wrap{position:relative;padding-bottom:1.4rem}
 
-    .ig-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .ig-cell {
-      border-radius: 12px; overflow: hidden;
-      background: var(--sage-lt); aspect-ratio: 1;
-      position: relative; text-decoration: none; display: block;
-      transition: opacity 0.2s;
+    /* OPEN TODAY badge — top-right of sticky note */
+    .open-badge-note{
+      position:absolute;top:-1.1rem;right:-1.1rem;
+      width:62px;height:62px;border-radius:50%;
+      background:var(--green);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:6;box-shadow:0 3px 12px rgba(28,18,8,0.18);
     }
-    .ig-cell:hover { opacity: 0.85; }
-    .ig-caption {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 1rem 1.1rem 0.9rem;
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .ig-cap-text { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-style: italic; color: var(--brown); opacity: 0.8; }
-    .ig-cap-arrow { font-size: 0.75rem; color: var(--brown); opacity: 0.5; flex-shrink: 0; }
+    .open-badge-note .ob-open{font-size:.43rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,240,232,.85);line-height:1.4}
+    .open-badge-note .ob-today{font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;color:white;line-height:1}
 
-    .ig-footer-bar {
-      background: var(--cream2); border-radius: 12px;
-      padding: 1.2rem 1.8rem;
-      display: flex; justify-content: space-between; align-items: center;
+    /* NOW BREWING — bottom-left of sticky note, protruding, straight */
+    .now-brewing{
+      position:absolute;bottom:-1.2rem;left:-1.4rem;
+      background:var(--brown);border-radius:10px;
+      padding:.65rem 1.15rem;width:188px;
+      z-index:6;box-shadow:0 4px 14px rgba(28,18,8,0.28);
+      transform:none;
     }
-    .ig-handle-text { font-size: 0.85rem; color: var(--brown); }
-    .ig-handle-text span { color: var(--blt); font-size: 0.78rem; }
-    .btn-ig-follow {
-      background: var(--brown); color: var(--cream);
-      text-decoration: none; font-size: 0.75rem;
-      padding: 0.65rem 1.4rem; border-radius: 100px;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      transition: background 0.2s;
-    }
-    .btn-ig-follow:hover { background: var(--bmid); }
+    .now-brewing-l{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.42);margin-bottom:.2rem}
+    .now-brewing-t{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--bg);line-height:1.4}
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--brown); padding: 4rem 6rem 2.5rem;
+    /* INSTAGRAM PROFILE CARD */
+    #page-instagram{padding-top:96px;min-height:100vh}
+    .ig-profile-wrap{display:flex;align-items:center;justify-content:center;padding:3rem 0 5rem}
+    .ig-card{
+      background:var(--bg2);border-radius:28px;
+      padding:3rem 3.5rem 2.8rem;
+      display:flex;flex-direction:column;align-items:center;text-align:center;
+      max-width:420px;width:100%;
+      box-shadow:0 2px 24px rgba(28,18,8,0.07);border:1px solid var(--bd);
     }
-    .footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
-    .ft-brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-style: italic; font-weight: 400;
-      color: var(--cream); margin-bottom: 0.3rem;
+    .ig-avatar-ring{
+      width:110px;height:110px;border-radius:50%;
+      background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:1.4rem;
+      box-shadow:0 4px 18px rgba(238,42,123,0.22);
     }
-    .ft-brand-loc { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.4); margin-bottom: 1rem; }
-    .ft-brand-tag { font-size: 0.8rem; color: rgba(240,234,224,0.5); line-height: 1.7; }
-    .ft-col-head { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(240,234,224,0.4); margin-bottom: 1.2rem; display: block; }
-    .ft-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .ft-links a { font-size: 0.85rem; color: rgba(240,234,224,0.65); text-decoration: none; transition: color 0.2s; }
-    .ft-links a:hover { color: var(--cream); }
-    .ft-phone { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; }
-    .ft-ig { font-size: 0.85rem; color: rgba(240,234,224,0.55); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
-    .ft-ig:hover { color: var(--cream); }
-    .footer-bottom {
-      border-top: 1px solid rgba(240,234,224,0.08); padding-top: 1.5rem;
-      display: flex; justify-content: space-between;
-      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(240,234,224,0.25);
+    .ig-avatar{
+      width:98px;height:98px;border-radius:50%;
+      background:white;
+      display:flex;align-items:center;justify-content:center;
+      border:none;overflow:hidden;
+    }
+    .ig-handle{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--brown);margin-bottom:.3rem}
+    .ig-tagline{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blt);margin-bottom:1.6rem}
+    .ig-stats{
+      display:flex;align-items:center;
+      background:var(--bg);border-radius:14px;
+      padding:.9rem 1.4rem;margin-bottom:1.8rem;width:100%;justify-content:center;
+    }
+    .ig-stat{display:flex;flex-direction:column;align-items:center;flex:1}
+    .ig-stat-n{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;color:var(--brown);line-height:1}
+    .ig-stat-l{font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blt);margin-top:.3rem}
+    .ig-stat-div{width:1px;height:2rem;background:var(--bd);flex-shrink:0}
+    .ig-follow-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      background:var(--brown);color:var(--bg);text-decoration:none;
+      font-family:'Outfit',sans-serif;font-size:.85rem;
+      padding:.9rem 2.2rem;border-radius:100px;
+      transition:background .2s;margin-bottom:1.3rem;width:100%;
+    }
+    .ig-follow-btn:hover{background:var(--bmid)}
+    .ig-sub{font-size:.75rem;color:var(--blt);line-height:1.7;font-weight:300;max-width:280px}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      nav{padding:0 2rem}
+      .hero-left{padding:4rem 3rem 2rem 3rem}
+      .hero-right{padding:2rem 2rem 3rem 1rem}
+      .home-cards{padding:2rem 3rem 4rem}
+      .inner{padding:3rem 3rem 4rem}
+      footer{padding:3.5rem 3rem 2rem}
+    }
+    @media(max-width:860px){
+      nav{padding:0 1.4rem;height:56px}
+      .nav-links{display:none}
+      .nav-cta{font-size:.72rem;padding:.55rem 1.1rem}
+      .hero{grid-template-columns:1fr;min-height:auto}
+      .hero-left{padding:2.5rem 1.6rem 2rem;order:1}
+      .hero-title{font-size:clamp(2.8rem,9vw,4.2rem)}
+      .hero-right{padding:0 1.6rem 2.5rem;order:2;justify-content:flex-start}
+      .hero-right-inner{max-width:100%;padding-bottom:1.5rem}
+      .sticky-note{transform:rotate(-.5deg)}
+      .now-brewing{transform:none}
+      .home-cards{padding:2rem 1.6rem 3.5rem}
+      .cards-grid{grid-template-columns:1fr}
+      .inner{padding:2rem 1.6rem 3rem}
+      .pg-title{font-size:clamp(2.2rem,8vw,3.5rem)}
+      .pg-hd{flex-direction:column;gap:.8rem;margin-bottom:2rem}
+      .loc-grid,.rv-grid{grid-template-columns:1fr}
+      .rv-banner{flex-direction:column;gap:1.2rem;padding:1.6rem}
+      .ig-card{padding:2.2rem 1.8rem 2rem}
+      footer{padding:3rem 1.6rem 2rem}
+      .ft-grid{grid-template-columns:1fr;gap:2rem}
+      .ft-bottom{flex-direction:column;gap:.4rem;text-align:center}
+    }
+    @media(max-width:480px){
+      .hero-left{padding:2rem 1.2rem 1.6rem}
+      .hero-right{padding:0 1.2rem 2rem}
+      .home-cards,.inner{padding:1.6rem 1.2rem 2.5rem}
+      footer{padding:2.5rem 1.2rem 1.8rem}
     }
 
-    /* ── ANIMATIONS ── */
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .hero-eyebrow { animation: fadeUp 0.6s 0.1s both; }
-    .hero-title    { animation: fadeUp 0.6s 0.2s both; }
-    .hero-body     { animation: fadeUp 0.6s 0.3s both; }
-    .hero-btns     { animation: fadeUp 0.6s 0.38s both; }
-    .hero-stats    { animation: fadeUp 0.6s 0.46s both; }
-    .hero-card-main{ animation: fadeUp 0.7s 0.2s both; }
-
-    /* ── MOBILE ── */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-left { padding: 3rem 2rem; }
-      .hero-right { padding: 2rem; }
-      .cards-grid { grid-template-columns: 1fr; }
-      #menu, #findus, #reviews, #instagram { padding: 4rem 2rem; }
-      .cards-section { padding: 3rem 2rem; }
-      .loc-grid { grid-template-columns: 1fr; }
-      .rv-grid { grid-template-columns: 1fr; }
-      .ig-grid { grid-template-columns: 1fr 1fr; }
-      footer { padding: 3rem 2rem 2rem; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
   </style>
 </head>
 <body>
 
 <!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <span class="ti">Spicy Korean Cheesesteak</span><span class="td"> ✦ </span>
-    <span class="ti">Matcha Latte</span><span class="td"> ✦ </span>
-    <span class="ti">Breakfast Burrito</span><span class="td"> ✦ </span>
-    <span class="ti">Pastrami Burger</span><span class="td"> ✦ </span>
-    <span class="ti">Since 2011 · Los Angeles</span><span class="td"> ✦ </span>
-    <span class="ti">Pesto Chicken</span><span class="td"> ✦ </span>
-    <span class="ti">Caprese Sandwich</span><span class="td"> ✦ </span>
-    <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td"> ✦ </span>
-    <span class="ti">Spicy Korean Cheesesteak</span><span class="td"> ✦ </span>
-    <span class="ti">Matcha Latte</span><span class="td"> ✦ </span>
-    <span class="ti">Breakfast Burrito</span><span class="td"> ✦ </span>
-    <span class="ti">Pastrami Burger</span><span class="td"> ✦ </span>
-    <span class="ti">Since 2011 · Los Angeles</span><span class="td"> ✦ </span>
-    <span class="ti">Pesto Chicken</span><span class="td"> ✦ </span>
-    <span class="ti">Caprese Sandwich</span><span class="td"> ✦ </span>
-    <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td"> ✦ </span>
-  </div>
-</div>
+<div class="ticker"><div class="ticker-track">
+  <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td">✦</span>
+  <span class="ti">Spicy Korean Cheesesteak</span><span class="td">✦</span>
+  <span class="ti">Matcha Latte</span><span class="td">✦</span>
+  <span class="ti">Breakfast Burrito</span><span class="td">✦</span>
+  <span class="ti">Pastrami Burger</span><span class="td">✦</span>
+  <span class="ti">Since 2011 · Los Angeles</span><span class="td">✦</span>
+  <span class="ti">Pesto Chicken</span><span class="td">✦</span>
+  <span class="ti">Caprese Sandwich</span><span class="td">✦</span>
+  <span class="ti">Made to feel good, meant to enjoy slowly</span><span class="td">✦</span>
+  <span class="ti">Spicy Korean Cheesesteak</span><span class="td">✦</span>
+  <span class="ti">Matcha Latte</span><span class="td">✦</span>
+  <span class="ti">Breakfast Burrito</span><span class="td">✦</span>
+  <span class="ti">Pastrami Burger</span><span class="td">✦</span>
+  <span class="ti">Since 2011 · Los Angeles</span><span class="td">✦</span>
+  <span class="ti">Pesto Chicken</span><span class="td">✦</span>
+  <span class="ti">Caprese Sandwich</span><span class="td">✦</span>
+</div></div>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-brand" href="#home">
-    <div class="nav-logo-circle">
-      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="19" y="10" font-family="'Outfit',sans-serif" font-size="3.2" font-weight="300" letter-spacing="1.8" fill="#B5CC99" text-anchor="middle">EST. 2011</text>
-        <line x1="8" y1="12" x2="30" y2="12" stroke="#B5CC99" stroke-width="0.3" opacity="0.4"/>
-        <text x="19" y="19.5" font-family="'Cormorant Garamond',serif" font-size="5.2" font-weight="400" letter-spacing="2" fill="#F0EAE0" text-anchor="middle">CAFE</text>
-        <text x="19" y="27.5" font-family="'Cormorant Garamond',serif" font-size="8.5" font-weight="400" letter-spacing="1.5" fill="#F0EAE0" text-anchor="middle">DULCE</text>
-        <line x1="7" y1="29.5" x2="31" y2="29.5" stroke="#F0EAE0" stroke-width="0.3" opacity="0.2"/>
-        <text x="19" y="35" font-family="'Cormorant Garamond',serif" font-size="4" font-style="italic" font-weight="300" letter-spacing="1" fill="#B5CC99" text-anchor="middle">Los Angeles</text>
-      </svg>
+  <div class="nav-brand" onclick="showPage('home')">
+    <div class="nav-circle">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQICAQEBAQMCAgICAwMEBAMDAwMEBAYFBAQFBAMDBQcFBQYGBgYGBAUHBwcGBwYGBgb/2wBDAQEBAQEBAQMCAgMGBAMEBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgb/wAARCAEsASwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/iiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoor59/a1+Fviz45fsq/tM/BTwFqum6F46+MH7PvjPwt4L1vWdUmsbOz1bVdIubSznnuYYpZYY0muI2aSOKR0UFlRyApAPoKivyJP7E/jKb/gmhq/7KWjfCfw/4Q8Ty+L9O1JvAafF3SCdXt7TxVaarcLf6nD4UGmTyXNvaywmzuNInsbmLyrS9DQTXDLq6j/wT88TfFf/AIJ//s2fspftB6b8JfE3jf4LfE74ealqy+F/FWux+GxouheJIDqFvZ3EmLpnn8LnUrEQskVqZblo447S28tYQD9YaKy4ptabWtQgn0/S4/Dsel2b6XqkWryPezXrSTi6iltTAEiijjSzZJVmkaVpZVaOIRK035v/APBRv9ln41/tSSfs3aT8LLLwivhz4f8AxZh13x/4nvfjnr3g/wAVaKILi0azu/DC2VtPYG/BS5V72/hlmtLVrhbFBPdGSMA/TSivzE+P37Jnx2+KP7e/wC+P3hrxRpek/Cz4ZaN4addbm+J2rWupeHH0671yTxHYWOgQx/Y79fElvqvh2znmnmj+zw6JvKzOlvE3058M/g74/wDCH7UH7UXxi17xWdY8AfGXw78PrX4feGZ/F+oX8ujzaJa38WoqlnOv2exhme8t5FS0YrJIZ5ZFWR2ZwD6for5j/Y++DPjL4A/ArTfhh488SXPi3xBpvxI8fanFruoeOr7xNdyaZrHirU9S0xLrVb6KO4urmOxv7SKWSRBmWN9pZQrH6coAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKK+Hv2tf+Cg3wA/Y/wBY8HfD7xZB8Svi5+0F8TbCe6+E37K/7OXw9uPGXxG8TWsDEXF1a6Vb4W3s4lSZnvb6W2tFEMgM25dtfknbf8HE2iyeObjR5/2TPCR8KJfyi3sN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2iAPriiiigAryXx58afB3w51i20PxBo3xa1G9utNS7in8B/APxP4psxEzugV7vS9NuIUlzExMTOJApVioV0LetUUAfOH/DVHwy/6Fj9o/wD8Q58ff/KOj/hqj4Zf9Cx+0f8A+Ic+Pv8A5R19H0UAfOH/AA1R8Mv+hY/aP/8AEOfH3/yjo/4ao+GX/QsftH/+Ic+Pv/lHX0fRQB84f8NUfDL/AKFj9o//AMQ58ff/ACjo/wCGqPhl/wBCx+0fyf8Aoznx9/8AKOvo+igAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDwz4c/s+eBfhx4x1b4gWs+t+J/GV14TtPDPh7X/FstvNPoHg+zmea00DTjDBHstI5ppJGll828uWEP2q4uBb2wh9zoooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9k=" alt="Cafe Dulce" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">
     </div>
-    <div class="nav-brand-text">
-      <div class="nav-brand-name">Cafe Dulce</div>
-      <div class="nav-brand-est">Est. 2011</div>
-    </div>
-  </a>
+    <div><div class="nav-name">Cafe Dulce</div><span class="nav-est">Est. 2011</span></div>
+  </div>
   <ul class="nav-links">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#menu">Menu</a></li>
-    <li><a href="#findus">Find Us</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#instagram">Instagram</a></li>
+    <li><button id="nb-home"      onclick="showPage('home')"      class="active">Home</button></li>
+    <li><button id="nb-menu"      onclick="showPage('menu')">Menu</button></li>
+    <li><button id="nb-findus"    onclick="showPage('findus')">Find Us</button></li>
+    <li><button id="nb-reviews"   onclick="showPage('reviews')">Reviews</button></li>
+    <li><button id="nb-instagram" onclick="showPage('instagram')">Instagram</button></li>
   </ul>
   <a class="nav-cta" href="tel:2135365609">Call to Order</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-left">
-    <div class="hero-eyebrow">A Los Angeles Cafe · Since 2011</div>
-    <h1 class="hero-title">
-      Made to feel <span class="green">good</span>,<br>
-      meant to enjoy<br>
-      <span class="italic">slowly</span>.
-    </h1>
-    <p class="hero-body">A neighborhood cafe with five corners of Los Angeles. Soft mornings, slow afternoons, sandwiches stacked with care, and a matcha that tastes like the garden it came from.</p>
-    <div class="hero-btns">
-      <a class="btn-dark" href="#menu">See the Menu →</a>
-      <a class="btn-ghost" href="#findus">Find a Location</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hstat">
-        <div class="hstat-n">4.4<span class="hstat-star">★</span></div>
-        <div class="hstat-l">Google</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat-n">5</div>
-        <div class="hstat-l">Locations</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat-n">14+</div>
-        <div class="hstat-l">Years</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="hero-card-main">
-      <div class="hcm-top">
-        <span class="hcm-label">Today's Pour &nbsp; No. 14</span>
-        <div class="open-badge">
-          <span>OPEN</span>
-          <strong>today</strong>
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-left">
+      <div>
+        <div class="hero-eyebrow">A Los Angeles Cafe · Since 2011</div>
+        <h1 class="hero-title">Made to feel <span class="green">good</span>,<br>meant to enjoy<br><span class="italic">slowly</span>.</h1>
+        <p class="hero-desc">Five corners of Los Angeles, one unhurried feeling. Come for the sandwich, stay for the second cup. We've been doing this since 2011 — softly, slowly, with care in every fold.</p>
+        <div class="hero-btns">
+          <button class="btn-dark" onclick="showPage('menu')">See the Menu →</button>
+          <button class="btn-ghost" onclick="showPage('findus')">Find a Location</button>
         </div>
       </div>
-      <div class="hcm-circle">
-        <span class="hcm-circle-top">Matcha</span>
-        <span class="hcm-circle-mid">slow</span>
-        <span class="hcm-circle-bot">poured</span>
-      </div>
-      <div class="hcm-quote">
-        <p class="hcm-quote-text">"the kind of cafe you stay an extra hour in."</p>
-        <p class="hcm-quote-attr">— Eater LA · 2023</p>
-      </div>
-      <div class="hcm-brewing">
-        <div class="hcm-brew-label">Now Brewing</div>
-        <div class="hcm-brew-text">Single-origin Ethiopia, honey process.</div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-n">4.4★</div><div class="hstat-l">Google</div></div>
+        <div class="hstat"><div class="hstat-n">5</div><div class="hstat-l">Locations</div></div>
+        <div class="hstat"><div class="hstat-n">14+</div><div class="hstat-l">Years</div></div>
       </div>
     </div>
+    <div class="hero-right">
+      <div class="hero-right-inner">
+        <!-- STICKY NOTE -->
+        <div class="sticky-wrap">
+          <div class="sticky-note">
+            <div class="open-badge-note"><span class="ob-open">Open</span><span class="ob-today">today</span></div>
+            <div class="sticky-header">
+              <span class="sticky-title">Fan favourites</span>
+              <span class="sticky-sub">what we're known for</span>
+            </div>
+            <div class="bs-item">
+              <div class="bs-rank">01</div>
+              <div class="bs-info"><div class="bs-name">Spicy Korean Cheesesteak</div><div class="bs-desc">Bulgogi beef, kimchi slaw, sweet chili</div></div>
+              <div class="bs-price">$15</div>
+            </div>
+            <div class="bs-item">
+              <div class="bs-rank">02</div>
+              <div class="bs-info"><div class="bs-name">Blueberry Matcha Latte</div><div class="bs-desc">House matcha, oat milk, blueberry</div></div>
+              <div class="bs-price">★</div>
+            </div>
+            <div class="bs-item">
+              <div class="bs-rank">03</div>
+              <div class="bs-info"><div class="bs-name">Breakfast Burrito</div><div class="bs-desc">Bacon, eggs, roasted potatoes, pico</div></div>
+              <div class="bs-price">$11.40</div>
+            </div>
+            <div class="bs-item">
+              <div class="bs-rank">04</div>
+              <div class="bs-info"><div class="bs-name">Pesto Chicken Sandwich</div><div class="bs-desc">Herb chicken, avocado, pesto aioli</div></div>
+              <div class="bs-price">$13.80</div>
+            </div>
+            <div class="bs-item">
+              <div class="bs-rank">05</div>
+              <div class="bs-info"><div class="bs-name">Green Tea Donut</div><div class="bs-desc">House-baked, matcha glaze</div></div>
+              <div class="bs-price">★</div>
+            </div>
+            <div class="now-brewing">
+              <div class="now-brewing-l">Now Brewing</div>
+              <div class="now-brewing-t">Single-origin Ethiopia, honey process.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="home-cards">
+    <div class="cards-grid">
+      <button class="sec-card" onclick="showPage('menu')">
+        <div class="sc-num">01 · Menu</div>
+        <div class="sc-title">Built by hand, every morning.</div>
+        <div class="sc-body">Sandwiches stacked with care, salads tossed to order, breakfast that lingers.</div>
+        <div class="sc-link">Explore →</div>
+      </button>
+      <button class="sec-card" onclick="showPage('findus')">
+        <div class="sc-num">02 · Locations</div>
+        <div class="sc-title">Five corners of LA.</div>
+        <div class="sc-body">USC Village, Little Tokyo, ROW DTLA, Dulce Cinco, and Vernon.</div>
+        <div class="sc-link">Explore →</div>
+      </button>
+      <button class="sec-card" onclick="showPage('reviews')">
+        <div class="sc-num">03 · The Neighborhood</div>
+        <div class="sc-title">522 reviews, 4.4 stars.</div>
+        <div class="sc-body">Loved by regulars who treat us like a second living room.</div>
+        <div class="sc-link">Explore →</div>
+      </button>
+    </div>
   </div>
-</section>
-
-<!-- SECTION CARDS -->
-<div class="cards-section">
-  <div class="cards-grid">
-    <a class="sec-card" href="#menu">
-      <div class="sc-num">01 · Menu</div>
-      <div class="sc-title">Built by hand, every morning.</div>
-      <div class="sc-body">Sandwiches stacked with care, salads tossed to order, breakfast that lingers.</div>
-      <div class="sc-link">Explore →</div>
-    </a>
-    <a class="sec-card" href="#findus">
-      <div class="sc-num">02 · Locations</div>
-      <div class="sc-title">Five corners of LA.</div>
-      <div class="sc-body">USC Village, Little Tokyo, ROW DTLA, Dulce Cinco, and Vernon.</div>
-      <div class="sc-link">Explore →</div>
-    </a>
-    <a class="sec-card" href="#reviews">
-      <div class="sc-num">03 · The Neighborhood</div>
-      <div class="sc-title">522 reviews, 4.4 stars.</div>
-      <div class="sc-body">Loved by regulars who treat us like a second living room.</div>
-      <div class="sc-link">Explore →</div>
-    </a>
-  </div>
+  <footer>
+    <div class="ft-grid">
+      <div><div class="ft-name">Cafe Dulce</div><div class="ft-loc">Los Angeles · Est. 2011</div><div class="ft-tag">Made to feel good, meant to enjoy slowly. Five neighborhood cafes across LA.</div></div>
+      <div><span class="ft-head">Visit</span><ul class="ft-links"><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('findus')">Find Us</button></li><li><button onclick="showPage('reviews')">Reviews</button></li><li><button onclick="showPage('instagram')">Instagram</button></li></ul></div>
+      <div><span class="ft-head">Say Hello</span><div class="ft-phone">(213) 536-5609</div><a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 Cafe Dulce</span><span>Made slowly in LA</span></div>
+  </footer>
 </div>
 
-<!-- MENU -->
-<section id="menu">
-  <div class="menu-hd">
-    <div class="menu-hd-left">
-      <span class="sec-eye">The Menu</span>
-      <h2 class="sec-title-lg">Stacked, fresh, slow.</h2>
+<!-- MENU PAGE -->
+<div id="page-menu" class="page">
+  <div class="inner">
+    <div class="pg-hd">
+      <div><span class="pg-eye">The Menu</span><h2 class="pg-title">Stacked, fresh, slow.</h2></div>
+      <div class="menu-hrs"><strong>Hours</strong>Mon–Fri 7AM–7PM<br>Sat–Sun 8AM–6PM</div>
     </div>
-    <div class="menu-hours">
-      <strong>Hours</strong>
-      Mon–Fri 7AM–7PM<br>Sat–Sun 8AM–6PM
+    <div class="mtabs">
+      <button class="mt on" onclick="tab('s',this)">Sandwiches</button>
+      <button class="mt" onclick="tab('sa',this)">Salads</button>
+      <button class="mt" onclick="tab('b',this)">Breakfast</button>
+      <button class="mt" onclick="tab('d',this)">Dinner</button>
+    </div>
+    <div class="ml on" id="t-s">
+      <div class="mi"><div class="mi-top"><span class="mi-n">Spicy Korean Cheesesteak</span><div class="mi-dots"></div><span class="mi-p">$15.00</span></div><p class="mi-d">Shaved steak, gochujang aioli, melted provolone, kimchi slaw.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Pastrami Burger</span><div class="mi-dots"></div><span class="mi-p">$15.00</span></div><p class="mi-d">House pastrami stacked on a wagyu patty with swiss & mustard.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Ranchera Steak Burrito</span><div class="mi-dots"></div><span class="mi-p">$14.40</span></div><p class="mi-d">Marinated ranchera steak, rice, beans, salsa verde.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Pesto Chicken</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Grilled chicken, basil pesto, mozzarella, sundried tomato.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Dulce Club</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Triple-stacked turkey, bacon, avocado, lettuce, tomato.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Portobello Burger</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Roasted portobello, caramelized onion, garlic aioli.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Caprese Sandwich</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Fresh mozzarella, tomato, basil, balsamic glaze.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Turkey Swiss</span><div class="mi-dots"></div><span class="mi-p">$12.00</span></div><p class="mi-d">Roast turkey, swiss, dijon, butter lettuce on sourdough.</p></div>
+    </div>
+    <div class="ml" id="t-sa">
+      <div class="mi"><div class="mi-top"><span class="mi-n">Asian Chicken Salad</span><div class="mi-dots"></div><span class="mi-p">$17.00</span></div><p class="mi-d">Herb-roasted chicken, sesame dressing, mixed nuts, mandarin oranges.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Mango Jicama Chicken</span><div class="mi-dots"></div><span class="mi-p">$17.00</span></div><p class="mi-d">Peanut vinaigrette, egg noodles, persian cucumbers, sesame seeds.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Caprese Salad</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Mozzarella, basil, tomatoes, persian cucumbers, balsamic glaze.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Peanut Kale Salad</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Roasted peanut vinaigrette, crumbled peanuts, grated reggiano, mint.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Cranberry Walnut</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Avocado, apples, arugula, mixed greens, olive oil & balsamic.</p></div>
+    </div>
+    <div class="ml" id="t-b">
+      <div class="mi"><div class="mi-top"><span class="mi-n">Breakfast Sandwich</span><div class="mi-dots"></div><span class="mi-p">$11.40</span></div><p class="mi-d">House milk bread, over medium eggs, black forest ham, arugula, cheddar.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Breakfast Burrito</span><div class="mi-dots"></div><span class="mi-p">$11.40</span></div><p class="mi-d">Bacon, scrambled eggs, roasted potatoes, pico de gallo, cheddar & jack.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Pesto Mayo</span><div class="mi-dots"></div><span class="mi-p">$1.00</span></div></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Chili Sauce / Spicy Mustard / Spicy Mayo</span><div class="mi-dots"></div><span class="mi-p">$0.50</span></div></div>
+    </div>
+    <div class="ml" id="t-d">
+      <div class="mi"><div class="mi-top"><span class="mi-n">Avocado Bacon Burger</span><div class="mi-dots"></div><span class="mi-p">$15.60</span></div><p class="mi-d">House brioche, sharp cheddar, bacon, avocado, pickles & house sauce.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Dulce Burger</span><div class="mi-dots"></div><span class="mi-p">$14.40</span></div><p class="mi-d">House brioche, slaw, pickles, sharp cheddar & house sauce.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Tuna Melt</span><div class="mi-dots"></div><span class="mi-p">$13.80</span></div><p class="mi-d">Tuna salad on house baguette, sharp cheddar & serrano peppers.</p></div>
+      <div class="mi"><div class="mi-top"><span class="mi-n">Basket of Fries</span><div class="mi-dots"></div><span class="mi-p">$7.14</span></div></div>
     </div>
   </div>
-  <div class="menu-tabs">
-    <button class="mt on" onclick="tab('s',this)">Sandwiches</button>
-    <button class="mt"    onclick="tab('sa',this)">Salads</button>
-    <button class="mt"    onclick="tab('b',this)">Breakfast</button>
-    <button class="mt"    onclick="tab('d',this)">Dinner</button>
-  </div>
-  <div class="ml on" id="t-s">
-    <div class="mi"><div><p class="mi-n">Spicy Korean Cheesesteak</p><p class="mi-d">Shaved steak, gochujang aioli, melted provolone, kimchi slaw.</p></div><div class="mi-dots"></div><span class="mi-p">$15.00</span></div>
-    <div class="mi"><div><p class="mi-n">Pastrami Burger</p><p class="mi-d">House pastrami stacked on a wagyu patty with swiss & mustard.</p></div><div class="mi-dots"></div><span class="mi-p">$15.00</span></div>
-    <div class="mi"><div><p class="mi-n">Ranchera Steak Burrito</p><p class="mi-d">Marinated ranchera steak, rice, beans, salsa verde.</p></div><div class="mi-dots"></div><span class="mi-p">$14.40</span></div>
-    <div class="mi"><div><p class="mi-n">Pesto Chicken</p><p class="mi-d">Grilled chicken, basil pesto, mozzarella, sundried tomato.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Dulce Club</p><p class="mi-d">Triple-stacked turkey, bacon, avocado, lettuce, tomato.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Portobello Burger</p><p class="mi-d">Roasted portobello, caramelized onion, garlic aioli.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Caprese Sandwich</p><p class="mi-d">Fresh mozzarella, tomato, basil, balsamic glaze.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Turkey Swiss</p><p class="mi-d">Roast turkey, swiss, dijon, butter lettuce on sourdough.</p></div><div class="mi-dots"></div><span class="mi-p">$12.00</span></div>
-  </div>
-  <div class="ml" id="t-sa">
-    <div class="mi"><div><p class="mi-n">Asian Chicken Salad</p><p class="mi-d">Herb-roasted chicken, sesame dressing, mixed nuts, mandarin oranges.</p></div><div class="mi-dots"></div><span class="mi-p">$17.00</span></div>
-    <div class="mi"><div><p class="mi-n">Mango Jicama Chicken</p><p class="mi-d">Peanut vinaigrette, egg noodles, persian cucumbers, sesame seeds.</p></div><div class="mi-dots"></div><span class="mi-p">$17.00</span></div>
-    <div class="mi"><div><p class="mi-n">Caprese Salad</p><p class="mi-d">Mozzarella, basil, tomatoes, persian cucumbers, balsamic glaze.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Peanut Kale Salad</p><p class="mi-d">Roasted peanut vinaigrette, crumbled peanuts, grated reggiano, mint.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Cranberry Walnut</p><p class="mi-d">Avocado, apples, arugula, mixed greens, olive oil & balsamic.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-  </div>
-  <div class="ml" id="t-b">
-    <div class="mi"><div><p class="mi-n">Breakfast Sandwich</p><p class="mi-d">House milk bread, over medium eggs, black forest ham, arugula, cheddar.</p></div><div class="mi-dots"></div><span class="mi-p">$11.40</span></div>
-    <div class="mi"><div><p class="mi-n">Breakfast Burrito</p><p class="mi-d">Bacon, scrambled eggs, roasted potatoes, pico de gallo, cheddar & jack.</p></div><div class="mi-dots"></div><span class="mi-p">$11.40</span></div>
-    <div class="mi"><div><p class="mi-n">Pesto Mayo</p></div><div class="mi-dots"></div><span class="mi-p">$1.00</span></div>
-    <div class="mi"><div><p class="mi-n">Chili Sauce / Spicy Mustard / Spicy Mayo</p></div><div class="mi-dots"></div><span class="mi-p">$0.50</span></div>
-  </div>
-  <div class="ml" id="t-d">
-    <div class="mi"><div><p class="mi-n">Avocado Bacon Burger</p><p class="mi-d">House brioche, sharp cheddar, bacon, avocado, pickles & house sauce.</p></div><div class="mi-dots"></div><span class="mi-p">$15.60</span></div>
-    <div class="mi"><div><p class="mi-n">Dulce Burger</p><p class="mi-d">House brioche, slaw, pickles, sharp cheddar & house sauce.</p></div><div class="mi-dots"></div><span class="mi-p">$14.40</span></div>
-    <div class="mi"><div><p class="mi-n">Tuna Melt</p><p class="mi-d">Tuna salad on house baguette, sharp cheddar & serrano peppers.</p></div><div class="mi-dots"></div><span class="mi-p">$13.80</span></div>
-    <div class="mi"><div><p class="mi-n">Basket of Fries</p></div><div class="mi-dots"></div><span class="mi-p">$7.14</span></div>
-  </div>
-</section>
+  <footer>
+    <div class="ft-grid">
+      <div><div class="ft-name">Cafe Dulce</div><div class="ft-loc">Los Angeles · Est. 2011</div><div class="ft-tag">Made to feel good, meant to enjoy slowly.</div></div>
+      <div><span class="ft-head">Visit</span><ul class="ft-links"><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('findus')">Find Us</button></li><li><button onclick="showPage('reviews')">Reviews</button></li><li><button onclick="showPage('instagram')">Instagram</button></li></ul></div>
+      <div><span class="ft-head">Say Hello</span><div class="ft-phone">(213) 536-5609</div><a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 Cafe Dulce</span><span>Made slowly in LA</span></div>
+  </footer>
+</div>
 
-<!-- FIND US -->
-<section id="findus">
-  <div class="findus-hd">
-    <div>
-      <span class="sec-eye">Find Us</span>
-      <h2 class="sec-title-lg">Five corners of LA.</h2>
+<!-- FIND US PAGE -->
+<div id="page-findus" class="page">
+  <div class="inner">
+    <div class="findus-hd">
+      <div><span class="pg-eye">Find Us</span><h2 class="pg-title">Five corners of LA.</h2></div>
+      <div class="findus-meta">5 locations · open daily</div>
     </div>
-    <div class="findus-meta">5 locations · open daily</div>
-  </div>
-  <div class="loc-grid">
-    <a class="lc" href="https://maps.google.com/?q=3096+McClintock+Ave+Los+Angeles" target="_blank" rel="noopener">
-      <div class="lc-inner">
-        <div class="lc-num">1</div>
-        <div class="lc-body">
+    <div class="loc-grid">
+
+      <div class="lc">
+        <div class="lc-row1">
+          <div class="lc-num">1</div>
           <div class="lc-name">USC Village <span class="here-pill">You're here</span></div>
-          <div class="lc-addr">3096 McClintock Ave #1420, Los Angeles</div>
-          <div class="lc-hrs">Mon–Fri 7AM–7PM · Sat–Sun 8AM–6PM</div>
-          <div class="lc-foot">
-            <a class="lc-phone" href="tel:2135365609">(213) 536-5609</a>
-            <span class="lc-sep">·</span>
-            <a class="lc-dir" href="https://maps.google.com/?q=3096+McClintock+Ave+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
-          </div>
+        </div>
+        <div class="lc-addr">3096 McClintock Ave #1420, Los Angeles</div>
+        <div class="lc-hrs">Mon–Fri 7AM–7PM · Sat–Sun 8AM–6PM</div>
+        <div class="lc-foot">
+          <a class="lc-phone" href="tel:2135365609">(213) 536-5609</a>
+          <span class="lc-sep"></span>
+          <a class="lc-dir" href="https://maps.google.com/?q=3096+McClintock+Ave+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
         </div>
       </div>
-    </a>
-    <a class="lc" href="https://maps.google.com/?q=134+Japanese+Village+Plaza+Los+Angeles" target="_blank" rel="noopener">
-      <div class="lc-inner">
-        <div class="lc-num">2</div>
-        <div class="lc-body">
+
+      <div class="lc">
+        <div class="lc-row1">
+          <div class="lc-num">2</div>
           <div class="lc-name">Little Tokyo</div>
-          <div class="lc-sub">Est. 2011 — the original</div>
-          <div class="lc-addr">134 Japanese Village Plaza, Los Angeles</div>
-          <div class="lc-hrs">Mon–Thu 8AM–7PM · Fri–Sat –9PM · Sun –8PM</div>
-          <div class="lc-foot">
-            <a class="lc-phone" href="tel:2133469910">(213) 346-9910</a>
-            <span class="lc-sep">·</span>
-            <a class="lc-dir" href="https://maps.google.com/?q=134+Japanese+Village+Plaza+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
-          </div>
+        </div>
+        <div class="lc-sub">Est. 2011 — the original</div>
+        <div class="lc-addr">134 Japanese Village Plaza, Los Angeles</div>
+        <div class="lc-hrs">Mon–Thu 8AM–7PM · Fri–Sat –9PM · Sun –8PM</div>
+        <div class="lc-foot">
+          <a class="lc-phone" href="tel:2133469910">(213) 346-9910</a>
+          <span class="lc-sep"></span>
+          <a class="lc-dir" href="https://maps.google.com/?q=134+Japanese+Village+Plaza+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
         </div>
       </div>
-    </a>
-    <a class="lc" href="https://maps.google.com/?q=777+S+Alameda+St+Los+Angeles" target="_blank" rel="noopener">
-      <div class="lc-inner">
-        <div class="lc-num">3</div>
-        <div class="lc-body">
+
+      <div class="lc">
+        <div class="lc-row1">
+          <div class="lc-num">3</div>
           <div class="lc-name">ROW DTLA</div>
-          <div class="lc-addr">777 S Alameda St #150, Los Angeles</div>
-          <div class="lc-hrs">Mon–Fri 8AM–4PM · Sat–Sun 10AM–4PM</div>
-          <div class="lc-foot">
-            <a class="lc-phone" href="tel:2135369633">(213) 536-9633</a>
-            <span class="lc-sep">·</span>
-            <a class="lc-dir" href="https://maps.google.com/?q=777+S+Alameda+St+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
-          </div>
+        </div>
+        <div class="lc-addr">777 S Alameda St #150, Los Angeles</div>
+        <div class="lc-hrs">Mon–Fri 8AM–4PM · Sat–Sun 10AM–4PM</div>
+        <div class="lc-foot">
+          <a class="lc-phone" href="tel:2135369633">(213) 536-9633</a>
+          <span class="lc-sep"></span>
+          <a class="lc-dir" href="https://maps.google.com/?q=777+S+Alameda+St+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
         </div>
       </div>
-    </a>
-    <a class="lc" href="https://maps.google.com/?q=210+E+Olympic+Blvd+Los+Angeles" target="_blank" rel="noopener">
-      <div class="lc-inner">
-        <div class="lc-num">4</div>
-        <div class="lc-body">
+
+      <div class="lc">
+        <div class="lc-row1">
+          <div class="lc-num">4</div>
           <div class="lc-name">Dulce Cinco</div>
-          <div class="lc-addr">210 E Olympic Blvd, Los Angeles</div>
-          <div class="lc-hrs">Mon–Fri 8:30AM–4:30PM · Sat 9AM–4PM</div>
-          <div class="lc-foot">
-            <a class="lc-phone" href="tel:2132388032">(213) 238-8032</a>
-            <span class="lc-sep">·</span>
-            <a class="lc-dir" href="https://maps.google.com/?q=210+E+Olympic+Blvd+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
-          </div>
+        </div>
+        <div class="lc-addr">210 E Olympic Blvd, Los Angeles</div>
+        <div class="lc-hrs">Mon–Fri 8:30AM–4:30PM · Sat 9AM–4PM</div>
+        <div class="lc-foot">
+          <a class="lc-phone" href="tel:2132388032">(213) 238-8032</a>
+          <span class="lc-sep"></span>
+          <a class="lc-dir" href="https://maps.google.com/?q=210+E+Olympic+Blvd+Los+Angeles" target="_blank" rel="noopener">Directions →</a>
         </div>
       </div>
-    </a>
-    <a class="lc" href="https://maps.google.com/?q=2520+S+Alameda+St+Vernon+CA" target="_blank" rel="noopener">
-      <div class="lc-inner">
-        <div class="lc-num">5</div>
-        <div class="lc-body">
+
+      <div class="lc">
+        <div class="lc-row1">
+          <div class="lc-num">5</div>
           <div class="lc-name">Vernon</div>
-          <div class="lc-addr">2520 S Alameda St, Vernon</div>
-          <div class="lc-hrs">Mon–Fri 7AM–3PM · Sat–Sun Closed</div>
-          <div class="lc-foot">
-            <a class="lc-phone" href="tel:2132464655">(213) 246-4655</a>
-            <span class="lc-sep">·</span>
-            <a class="lc-dir" href="https://maps.google.com/?q=2520+S+Alameda+St+Vernon+CA" target="_blank" rel="noopener">Directions →</a>
+        </div>
+        <div class="lc-addr">2520 S Alameda St, Vernon</div>
+        <div class="lc-hrs">Mon–Fri 7AM–3PM · Sat–Sun Closed</div>
+        <div class="lc-foot">
+          <a class="lc-phone" href="tel:2132464655">(213) 246-4655</a>
+          <span class="lc-sep"></span>
+          <a class="lc-dir" href="https://maps.google.com/?q=2520+S+Alameda+St+Vernon+CA" target="_blank" rel="noopener">Directions →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <footer>
+    <div class="ft-grid">
+      <div><div class="ft-name">Cafe Dulce</div><div class="ft-loc">Los Angeles · Est. 2011</div><div class="ft-tag">Made to feel good, meant to enjoy slowly.</div></div>
+      <div><span class="ft-head">Visit</span><ul class="ft-links"><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('findus')">Find Us</button></li><li><button onclick="showPage('reviews')">Reviews</button></li><li><button onclick="showPage('instagram')">Instagram</button></li></ul></div>
+      <div><span class="ft-head">Say Hello</span><div class="ft-phone">(213) 536-5609</div><a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 Cafe Dulce</span><span>Made slowly in LA</span></div>
+  </footer>
+</div>
+
+<!-- REVIEWS PAGE -->
+<div id="page-reviews" class="page">
+  <div class="inner">
+    <div class="rv-hd">
+      <div><span class="pg-eye">Reviews</span><h2 class="pg-title">What guests are saying.</h2></div>
+      <div><div class="rv-big">4.4★</div><div class="rv-sub">522 Google Reviews</div></div>
+    </div>
+    <div class="rv-grid">
+      <div class="rv"><div class="rv-top"><div class="rv-who"><div class="rv-av">M</div><div><div class="rv-n">Maya R.</div><div class="rv-t">2 weeks ago</div></div></div><div class="rv-stars">★★★★★</div></div><p class="rv-q">"The Korean cheesesteak is unreal and the matcha latte is the best in DTLA. Cozy vibes, kind staff."</p></div>
+      <div class="rv"><div class="rv-top"><div class="rv-who"><div class="rv-av">D</div><div><div class="rv-n">Daniel K.</div><div class="rv-t">1 month ago</div></div></div><div class="rv-stars">★★★★★</div></div><p class="rv-q">"My USC morning ritual. The breakfast burrito and an oat latte and I'm set for the day."</p></div>
+      <div class="rv"><div class="rv-top"><div class="rv-who"><div class="rv-av">P</div><div><div class="rv-n">Priya S.</div><div class="rv-t">3 weeks ago</div></div></div><div class="rv-stars">★★★★<span style="opacity:.3">★</span></div></div><p class="rv-q">"Beautiful little spot in Little Tokyo. The caprese sandwich is fresh and the pastries are dangerous."</p></div>
+      <div class="rv"><div class="rv-top"><div class="rv-who"><div class="rv-av">J</div><div><div class="rv-n">Jordan T.</div><div class="rv-t">5 days ago</div></div></div><div class="rv-stars">★★★★★</div></div><p class="rv-q">"Honestly the warmest cafe in LA. The Dulce burger at dinner hits and the staff remember your name."</p></div>
+    </div>
+    <div class="rv-banner">
+      <div><div class="rv-banner-t">Loved by the neighborhood.</div><div class="rv-banner-s">4.4★ average across 522 verified Google reviews.</div></div>
+      <a class="btn-rv" href="https://maps.google.com/?q=Cafe+Dulce+USC+Village" target="_blank" rel="noopener">Read all reviews →</a>
+    </div>
+  </div>
+  <footer>
+    <div class="ft-grid">
+      <div><div class="ft-name">Cafe Dulce</div><div class="ft-loc">Los Angeles · Est. 2011</div><div class="ft-tag">Made to feel good, meant to enjoy slowly.</div></div>
+      <div><span class="ft-head">Visit</span><ul class="ft-links"><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('findus')">Find Us</button></li><li><button onclick="showPage('reviews')">Reviews</button></li><li><button onclick="showPage('instagram')">Instagram</button></li></ul></div>
+      <div><span class="ft-head">Say Hello</span><div class="ft-phone">(213) 536-5609</div><a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 Cafe Dulce</span><span>Made slowly in LA</span></div>
+  </footer>
+</div>
+
+<!-- INSTAGRAM PAGE -->
+<div id="page-instagram" class="page">
+  <div class="inner">
+    <div class="pg-hd">
+      <div><span class="pg-eye">Instagram</span><h2 class="pg-title">Find us on Instagram.</h2></div>
+    </div>
+    <div class="ig-profile-wrap">
+      <div class="ig-card">
+        <div class="ig-avatar-ring">
+          <div class="ig-avatar">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQICAQEBAQMCAgICAwMEBAMDAwMEBAYFBAQFBAMDBQcFBQYGBgYGBAUHBwcGBwYGBgb/2wBDAQEBAQEBAQMCAgMGBAMEBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgb/wAARCAEsASwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/iiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoor59/a1+Fviz45fsq/tM/BTwFqum6F46+MH7PvjPwt4L1vWdUmsbOz1bVdIubSznnuYYpZYY0muI2aSOKR0UFlRyApAPoKivyJP7E/jKb/gmhq/7KWjfCfw/4Q8Ty+L9O1JvAafF3SCdXt7TxVaarcLf6nD4UGmTyXNvaywmzuNInsbmLyrS9DQTXDLq6j/wT88TfFf/AIJ//s2fspftB6b8JfE3jf4LfE74ealqy+F/FWux+GxouheJIDqFvZ3EmLpnn8LnUrEQskVqZblo447S28tYQD9YaKy4ptabWtQgn0/S4/Dsel2b6XqkWryPezXrSTi6iltTAEiijjSzZJVmkaVpZVaOIRK035v/APBRv9ln41/tSSfs3aT8LLLwivhz4f8AxZh13x/4nvfjnr3g/wAVaKILi0azu/DC2VtPYG/BS5V72/hlmtLVrhbFBPdGSMA/TSivzE+P37Jnx2+KP7e/wC+P3hrxRpek/Cz4ZaN4addbm+J2rWupeHH0671yTxHYWOgQx/Y79fElvqvh2znmnmj+zw6JvKzOlvE3058M/g74/wDCH7UH7UXxi17xWdY8AfGXw78PrX4feGZ/F+oX8ujzaJa38WoqlnOv2exhme8t5FS0YrJIZ5ZFWR2ZwD6for5j/Y++DPjL4A/ArTfhh488SXPi3xBpvxI8fanFruoeOr7xNdyaZrHirU9S0xLrVb6KO4urmOxv7SKWSRBmWN9pZQrH6coAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKK+Hv2tf+Cg3wA/Y/wBY8HfD7xZB8Svi5+0F8TbCe6+E37K/7OXw9uPGXxG8TWsDEXF1a6Vb4W3s4lSZnvb6W2tFEMgM25dtfknbf8HE2iyeObjR5/2TPCR8KJfyi3sN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2iAPriiiigAryXx58afB3w51i20PxBo3xa1G9utNS7in8B/APxP4psxEzugV7vS9NuIUlzExMTOJApVioV0LetUUAfOH/DVHwy/6Fj9o/wD8Q58ff/KOj/hqj4Zf9Cx+0f8A+Ic+Pv8A5R19H0UAfOH/AA1R8Mv+hY/aP/8AEOfH3/yjo/4ao+GX/QsftH/+Ic+Pv/lHX0fRQB84f8NUfDL/AKFj9o//AMQ58ff/ACjo/wCGqPhl/wBCx+0fyf8Aoznx9/8AKOvo+igAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDwz4c/s+eBfhx4x1b4gWs+t+J/GV14TtPDPh7X/FstvNPoHg+zmea00DTjDBHstI5ppJGll828uWEP2q4uBb2wh9zoooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9k=" alt="Cafe Dulce" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">
           </div>
         </div>
-      </div>
-    </a>
-  </div>
-</section>
-
-<!-- REVIEWS -->
-<section id="reviews">
-  <div class="reviews-hd">
-    <div>
-      <span class="sec-eye">Reviews</span>
-      <h2 class="sec-title-lg">What guests are saying.</h2>
-    </div>
-    <div class="reviews-rating">
-      <div class="rr-big">4.4<span class="star">★</span></div>
-      <div class="rr-sub">522 Google Reviews</div>
-    </div>
-  </div>
-  <div class="rv-grid">
-    <div class="rv">
-      <div class="rv-top">
-        <div class="rv-who">
-          <div class="rv-avatar">M</div>
-          <div><div class="rv-name">Maya R.</div><div class="rv-time">2 weeks ago</div></div>
+        <div class="ig-handle">@cafedulcela</div>
+        <div class="ig-tagline">Cafe Dulce · Los Angeles</div>
+        <div class="ig-stats">
+          <div class="ig-stat"><span class="ig-stat-n">20.9K</span><span class="ig-stat-l">followers</span></div>
+          <div class="ig-stat-div"></div>
+          <div class="ig-stat"><span class="ig-stat-n">1,242</span><span class="ig-stat-l">posts</span></div>
+          <div class="ig-stat-div"></div>
+          <div class="ig-stat"><span class="ig-stat-n">Est. 2011</span><span class="ig-stat-l">Los Angeles</span></div>
         </div>
-        <div class="rv-stars">★★★★★</div>
+        <a class="ig-follow-btn" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">Follow on Instagram ↗</a>
+        <p class="ig-sub">Daily specials, behind-the-scenes & slow mornings from our five LA corners.</p>
       </div>
-      <p class="rv-q">"The Korean cheesesteak is unreal and the matcha latte is the best in DTLA. Cozy vibes, kind staff."</p>
-    </div>
-    <div class="rv">
-      <div class="rv-top">
-        <div class="rv-who">
-          <div class="rv-avatar">D</div>
-          <div><div class="rv-name">Daniel K.</div><div class="rv-time">1 month ago</div></div>
-        </div>
-        <div class="rv-stars">★★★★★</div>
-      </div>
-      <p class="rv-q">"My USC morning ritual. The breakfast burrito and an oat latte and I'm set for the day."</p>
-    </div>
-    <div class="rv">
-      <div class="rv-top">
-        <div class="rv-who">
-          <div class="rv-avatar">P</div>
-          <div><div class="rv-name">Priya S.</div><div class="rv-time">3 weeks ago</div></div>
-        </div>
-        <div class="rv-stars">★★★★<span style="opacity:0.3">★</span></div>
-      </div>
-      <p class="rv-q">"Beautiful little spot in Little Tokyo. The caprese sandwich is fresh and the pastries are dangerous."</p>
-    </div>
-    <div class="rv">
-      <div class="rv-top">
-        <div class="rv-who">
-          <div class="rv-avatar">J</div>
-          <div><div class="rv-name">Jordan T.</div><div class="rv-time">5 days ago</div></div>
-        </div>
-        <div class="rv-stars">★★★★★</div>
-      </div>
-      <p class="rv-q">"Honestly the warmest cafe in LA. The Dulce burger at dinner hits and the staff remember your name."</p>
     </div>
   </div>
-  <div class="rv-summary">
-    <div>
-      <div class="rvs-title">Loved by the neighborhood.</div>
-      <div class="rvs-sub">4.4★ average across 522 verified Google reviews.</div>
+  <footer>
+    <div class="ft-grid">
+      <div><div class="ft-name">Cafe Dulce</div><div class="ft-loc">Los Angeles · Est. 2011</div><div class="ft-tag">Made to feel good, meant to enjoy slowly.</div></div>
+      <div><span class="ft-head">Visit</span><ul class="ft-links"><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('findus')">Find Us</button></li><li><button onclick="showPage('reviews')">Reviews</button></li><li><button onclick="showPage('instagram')">Instagram</button></li></ul></div>
+      <div><span class="ft-head">Say Hello</span><div class="ft-phone">(213) 536-5609</div><a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a></div>
     </div>
-    <a class="btn-read-reviews" href="https://maps.google.com/?q=Cafe+Dulce+USC+Village" target="_blank" rel="noopener">Read all reviews →</a>
-  </div>
-</section>
-
-<!-- INSTAGRAM -->
-<section id="instagram">
-  <div class="ig-hd">
-    <div>
-      <span class="sec-eye">Instagram</span>
-      <div class="ig-title-big">@cafedulcela</div>
-    </div>
-    <div class="ig-hd-right">
-      <div class="ig-followers">20.9K followers</div>
-      <div class="ig-freq">Daily-ish</div>
-    </div>
-  </div>
-  <div class="ig-grid">
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Matcha mornings</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Pastrami stack</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Sunday slow</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Pesto chicken</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Cinco corner</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-    <a class="ig-cell" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">
-      <div class="ig-caption"><span class="ig-cap-text">Closing hour</span><span class="ig-cap-arrow">↗</span></div>
-    </a>
-  </div>
-  <div class="ig-footer-bar">
-    <div class="ig-handle-text">@cafedulcela <span>· 20.9K followers</span></div>
-    <a class="btn-ig-follow" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">Follow on Instagram →</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <div class="ft-brand-name">Cafe Dulce</div>
-      <div class="ft-brand-loc">Los Angeles · Est. 2011</div>
-      <div class="ft-brand-tag">Made to feel good, meant to enjoy slowly. Five neighborhood cafes across LA.</div>
-    </div>
-    <div>
-      <span class="ft-col-head">Visit</span>
-      <ul class="ft-links">
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#findus">Find Us</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#instagram">Instagram</a></li>
-      </ul>
-    </div>
-    <div>
-      <span class="ft-col-head">Say Hello</span>
-      <div class="ft-phone">(213) 536-5609</div>
-      <a class="ft-ig" href="https://www.instagram.com/cafedulcela/" target="_blank" rel="noopener">@cafedulcela ↗</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Cafe Dulce</span>
-    <span>Made slowly in LA</span>
-  </div>
-</footer>
+    <div class="ft-bottom"><span>© 2026 Cafe Dulce</span><span>Made slowly in LA</span></div>
+  </footer>
+</div>
 
 <script>
-  function go(url) {
-    var a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-  function scrollTo(id) {
-    var el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
-  function tab(id, btn) {
-    document.querySelectorAll('.ml').forEach(m => m.classList.remove('on'));
-    document.querySelectorAll('.mt').forEach(b => b.classList.remove('on'));
-    document.getElementById('t-' + id).classList.add('on');
-    btn.classList.add('on');
-  }
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  pg.classList.add('active');
+  pg.querySelectorAll('.hero,.home-cards,.pg-hd,.mtabs,.ml.on,.loc-grid,.rv-hd,.rv-grid,.rv-banner,.ig-hd,.ig-profile-wrap,footer').forEach(el=>{
+    el.style.animation='none';void el.offsetHeight;el.style.animation='';
+  });
+  const btn=document.getElementById('nb-'+name);
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+function tab(id,btn){
+  document.querySelectorAll('.ml').forEach(m=>m.classList.remove('on'));
+  document.querySelectorAll('.mt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('t-'+id).classList.add('on');
+  btn.classList.add('on');
+}
 </script>
 </body>
 </html>
