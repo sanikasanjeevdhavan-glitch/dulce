@@ -307,7 +307,7 @@ footer{background:var(--brown);padding:4rem 6rem 2.5rem}
       background:var(--brown);border-radius:10px;
       padding:.65rem 1.15rem;width:188px;
       z-index:6;box-shadow:0 4px 14px rgba(28,18,8,0.28);
-      transform:none;
+      transform:rotate(1.5deg);
     }
     .now-brewing-l{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.42);margin-bottom:.2rem}
     .now-brewing-t{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--bg);line-height:1.4}
@@ -753,6 +753,14 @@ function showPage(name){
   });
   const btn=document.getElementById('nb-'+name);
   if(btn) btn.classList.add('active');
+  if (name === 'menu') {
+    document.querySelectorAll('.ml').forEach(m => m.classList.remove('on'));
+    document.querySelectorAll('.mt').forEach(b => b.classList.remove('on'));
+    const firstTab = document.querySelector('.ml');
+    const firstBtn = document.querySelector('.mt');
+    if (firstTab) firstTab.classList.add('on');
+    if (firstBtn) firstBtn.classList.add('on');
+  }
   window.scrollTo(0,0);
 }
 function tab(id,btn){
